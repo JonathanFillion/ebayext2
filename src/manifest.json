@@ -1,0 +1,21 @@
+{
+	"name": "Ebay Sku Generator",
+	"version": "2.0",
+	"description": "Angular Based Sku Generator",
+	"manifest_version": 2,
+	"browser_action": {
+		"default_popup": "index.html"
+	},
+	"permissions": [
+		"storage",
+		"activeTab",
+		"webNavigation"
+	],
+	"background": {
+		"scripts": [
+			"background.js",
+			"runtime.js"
+		]
+	}
+
+}
