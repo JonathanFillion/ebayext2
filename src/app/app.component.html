@@ -1,6 +1,15 @@
-<div id="skuContainer" class="container-fluid">
+<ul class="nav">
+  <li class="nav-item">
+    <a class="nav-link active" href="#" (click)="showSkuCustomization()">Sku Customization</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#" (click)="showPrefilling()">Pre-filling fields</a>
+  </li>
+</ul>
+ 
+
+<div *ngIf="this.isSkuCustomizationActive" id="skuContainer" class="container-fluid">
   <div class="card">
-    <div class="card-header"><span class=""><a href="javascript:void">Sku Customization Options</a></span></div>
     <div class="card-body">
       <div id="skuFieldsAdder" class="input-group">
         <select class="custom-select" [(ngModel)]="this.currentSelectionType">
@@ -12,18 +21,94 @@
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" (click)="addSelectionToSkuModel()">Add</button>
         </div>
+        <div class="input-group mt-1">
+          <button class="btn" type="button" (click)="saveSku()">Save</button>
+        </div>
       </div>
     </div>
-    <div id="skuDisplayArea" class="card-body">
+  </div>
+  <div id="skuDisplayArea">
+    <div class="card">
       <div *ngFor="let skuField of this.SKU; let index = index;trackBy:trackByIndex">
-        <div class="row" *ngIf="skuField.TYPE === 'ID'">
-          <div class="col-sm-4" ><input type="text" [(ngModel)]="this.SKU[index].name"></div>
-          <div class="col-sm-4"><input type="text" [(ngModel)]="this.SKU[index].startPoint"></div>
-          <div class="col-sm-4"><input type="text" [(ngModel)]="this.SKU[index].currentId"></div>
+        <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
+          <div><span class="type-hint-small">ID</span></div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Start Point</th>
+              <th>Current Id</th>
+            </tr>
+            <tr>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+              </td>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
+              </td>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
+              </td>
+            </tr>
+          </table>
         </div>
-        <div class="row" *ngIf="skuField.TYPE === 'SELECT'">SELECT</div>
-        <div class="row" *ngIf="skuField.TYPE === 'DATE'">DATE</div>
-        <div class="row" *ngIf="skuField.TYPE === 'VALUE'">VALUE</div>
+        <div class="card-body" *ngIf="skuField.TYPE === 'SELECT'">
+          <div><span class="type-hint-small">SELECT</span></div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Fields (separated by commas)</th>
+            </tr>
+            <tr>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+              </td>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body" *ngIf="skuField.TYPE === 'DATE'">
+          <div><span class="type-hint-small">DATE</span></div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Separation Character</th>              
+            </tr>
+            <tr>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+              </td>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body" *ngIf="skuField.TYPE === 'VALUE'">
+          <div><span class="type-hint-small">VALUE</span></div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+            <tr>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+              </td>
+              <td>
+                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-footer">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm" (click)="moveUp(index)">Move up</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="moveDown(index)">Move down</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="removeSkuElement(index)">Delete</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
