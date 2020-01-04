@@ -131,33 +131,4 @@ export class AppComponent {
 		chrome.storage.local.set({sku: this._skuStateWhenSaved});
 	}
 
-/*	
-	haskSkuStructure(skuStruct:any){
-
-		for(let i = 0; i< skuStruct.length; i++){
-
-			switch (skuStruct[i].TYPE) {
-				case "ID":
-
-				break;
-				case "SELECT":
-				break;
-				case "DATE":
-				break;
-				case "VALUE":
-				break;
-				default:
-				console.log("Error")
-				break
-			}
-
-
-
-		}
-
-
-
-	}*/
-
-
 }
