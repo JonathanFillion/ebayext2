@@ -19,6 +19,9 @@ export class AppComponent {
 	_skuStateWhenSaved: string;
 	isSkuCustomizationActive = true;
 	isPrefillingActive = false;
+	errorList:string[] = []
+
+
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
 		this.sfl = new SkuFieldsTypeList()
 	}
@@ -79,16 +82,8 @@ export class AppComponent {
 			break;  		  		
 		}
 
-	}
-
-	showSkuCustomization(){
-		this.isPrefillingActive = false;
-		this.isSkuCustomizationActive = true;
-	}
-
-	showPrefilling(){
-		this.isPrefillingActive = true;
-		this.isSkuCustomizationActive = false;
+		this.saveSku()
+		this.currentNameOfNewField = ""
 	}
 
 	moveUp(index){
@@ -101,6 +96,8 @@ export class AppComponent {
 		
 		this.SKU[index - 1] = elemGoingUp;
 		this.SKU[index] = elemGoingDown;
+
+		this.saveSku()
 
 	}
 
@@ -115,20 +112,63 @@ export class AppComponent {
 		this.SKU[index] = elemGoingUp 
 		this.SKU[index+1] = elemGoingDown 
 
+		this.saveSku()
+
 	}
 
 	removeSkuElement(index){
 		this.SKU.splice(parseInt(index), 1)
+		this.saveSku()
 	}
 
 	trackByIndex(index:number, obj:any){
+		console.log("duh")
 		return index;
 	}
 
 	saveSku(){
-		console.log(JSON.stringify(this.SKU))
+		this.validateSku()
 		this._skuStateWhenSaved = JSON.stringify(this.SKU)
 		chrome.storage.local.set({sku: this._skuStateWhenSaved});
+	}
+
+	validateSku(){
+		this.errorList = [];
+		for(let i = 0; i < this.SKU.length; i++){
+			switch(this.SKU[i]["TYPE"]) {
+				case "ID":
+				console.log(this.SKU[i]["name"])
+				if(!this.isNumber(this.SKU[i]["startPoint"])){
+					this.errorList.push("In " + this.SKU[i].name + ", StartPoint must be a number")
+				}
+				if(!this.isNumber(this.SKU[i]["currentId"])){
+					this.errorList.push("In " + this.SKU[i].name + ", currentId must be a number")
+				}
+				break;
+
+				case "SELECT":
+				console.log(this.SKU[i]["name"])
+				console.log(this.SKU[i]["choices"].split(","))
+
+				break;
+
+				case "DATE":
+				console.log(this.SKU[i]["name"])
+				
+				break;
+
+				case "VALUE":
+				console.log(this.SKU[i]["name"])
+				
+				break;  		  		
+			}
+
+		}
+
+	}
+
+	isNumber(val: string): boolean{
+		return val != null && val !== '' && !isNaN(Number(val.toString()))
 	}
 
 }

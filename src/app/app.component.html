@@ -1,12 +1,9 @@
 <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link" href="#" (click)="showSkuCustomization()">Sku Customization</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#" (click)="showPrefilling()">Pre-filling fields</a>
+    <a class="nav-link" href="#">Sku Customization</a>
   </li>
 </ul>
- 
+
 
 <div *ngIf="this.isSkuCustomizationActive" id="skuContainer" class="container-fluid">
   <div class="card">
@@ -21,9 +18,9 @@
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" (click)="addSelectionToSkuModel()">Add</button>
         </div>
-        <div class="input-group mt-1">
+        <!-- <div class="input-group mt-1">
           <button class="btn btn-primary" type="button" (click)="saveSku()">Save</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -40,13 +37,13 @@
             </tr>
             <tr>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
               </td>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
               </td>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
               </td>
             </tr>
           </table>
@@ -60,10 +57,10 @@
             </tr>
             <tr>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
               </td>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
               </td>
             </tr>
           </table>
@@ -77,10 +74,10 @@
             </tr>
             <tr>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
               </td>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
               </td>
             </tr>
           </table>
@@ -94,10 +91,10 @@
             </tr>
             <tr>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
               </td>
               <td>
-                <input class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
+                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
               </td>
             </tr>
           </table>
