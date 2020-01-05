@@ -1,3 +1,17 @@
 
 
-.type-hint-small {font-size: 10px}
+.type-hint-small {
+	font-size: 10px
+}
+
+.outside-color {
+	background-color: #b8b8b8;
+}
+
+.inside-color {
+	background-color: #d6d4d4;
+}
+
+.spaced-card {
+	margin-top: 10px;
+}

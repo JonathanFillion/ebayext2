@@ -19,7 +19,7 @@ export class AppComponent {
 	_skuStateWhenSaved: string;
 	isSkuCustomizationActive = true;
 	isPrefillingActive = false;
-	errorList:string[] = []
+	errorList: string[] = []
 
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
@@ -28,17 +28,19 @@ export class AppComponent {
 
 	ngOnInit() {
 		chrome.storage.local.get(['sku'], (result) => {
-			this.createSkuModelFromJson(result.sku);
+			if(result.sku){
+				this.createSkuModelFromJson(result.sku);
+			}
 		})
 	}
 
-	createSkuModelFromJson(skuJson:string){
+	createSkuModelFromJson(skuJson: string) {
 		let skuObject: any[] = JSON.parse(skuJson);
 		console.log(skuObject)
-		for(let i = 0 ; i < skuObject.length;i++){
-			switch(skuObject[i]["TYPE"]) {
+		for (let i = 0; i < skuObject.length; i++) {
+			switch (skuObject[i]["TYPE"]) {
 				case "ID":
-				this.SKU.push(new SkuIdField(skuObject[i]["name"],skuObject[i]["startPoint"],skuObject[i]["currentId"]))
+				this.SKU.push(new SkuIdField(skuObject[i]["name"], skuObject[i]["startPoint"], skuObject[i]["currentId"]))
 				break;
 
 				case "SELECT":
@@ -51,22 +53,21 @@ export class AppComponent {
 
 				case "VALUE":
 				this.SKU.push(new SkuValueField(skuObject[i]["name"], skuObject[i]["currentValue"]))
-				break;  		  		
+				break;
 			}
 		}
 		this.changeDetectorRef.detectChanges()
 	}
 
-
-	addSelectionToSkuModel(){
-		if(this.currentSelectionType === "" || this.currentSelectionType === undefined){
+	addSelectionToSkuModel() {
+		if (this.currentSelectionType === "" || this.currentSelectionType === undefined) {
 			console.log("Display error message")
 			return;
 		}
 
-		switch(this.currentSelectionType) {
+		switch (this.currentSelectionType) {
 			case "ID":
-			this.SKU.push(new SkuIdField(this.currentNameOfNewField,0,0))
+			this.SKU.push(new SkuIdField(this.currentNameOfNewField, 0, 0))
 			break;
 
 			case "SELECT":
@@ -79,21 +80,21 @@ export class AppComponent {
 
 			case "VALUE":
 			this.SKU.push(new SkuValueField(this.currentNameOfNewField, ""))
-			break;  		  		
+			break;
 		}
 
 		this.saveSku()
 		this.currentNameOfNewField = ""
 	}
 
-	moveUp(index){
-		if(parseInt(index) <= 0){
+	moveUp(index) {
+		if (parseInt(index) <= 0) {
 			return;
 		}
 
 		let elemGoingUp: any = this.SKU[index]
 		let elemGoingDown: any = this.SKU[index - 1]
-		
+
 		this.SKU[index - 1] = elemGoingUp;
 		this.SKU[index] = elemGoingDown;
 
@@ -101,73 +102,78 @@ export class AppComponent {
 
 	}
 
-	moveDown(index){
-		if(parseInt(index) == this.SKU.length -1){
+	moveDown(index) {
+		if (parseInt(index) == this.SKU.length - 1) {
 			return;
 		}
 
 		let elemGoingDown: any = this.SKU[index]
 		let elemGoingUp: any = this.SKU[index + 1]
 
-		this.SKU[index] = elemGoingUp 
-		this.SKU[index+1] = elemGoingDown 
+		this.SKU[index] = elemGoingUp
+		this.SKU[index + 1] = elemGoingDown
 
 		this.saveSku()
 
 	}
 
-	removeSkuElement(index){
+	removeSkuElement(index) {
 		this.SKU.splice(parseInt(index), 1)
 		this.saveSku()
 	}
 
-	trackByIndex(index:number, obj:any){
+	trackByIndex(index: number, obj: any) {
 		console.log("duh")
 		return index;
 	}
 
-	saveSku(){
+	saveSku() {
 		this.validateSku()
 		this._skuStateWhenSaved = JSON.stringify(this.SKU)
-		chrome.storage.local.set({sku: this._skuStateWhenSaved});
+		chrome.storage.local.set({ sku: this._skuStateWhenSaved });
 	}
 
-	validateSku(){
+	validateSku() {
 		this.errorList = [];
-		for(let i = 0; i < this.SKU.length; i++){
-			switch(this.SKU[i]["TYPE"]) {
+		for (let i = 0; i < this.SKU.length; i++) {
+			switch (this.SKU[i]["TYPE"]) {
 				case "ID":
-				console.log(this.SKU[i]["name"])
-				if(!this.isNumber(this.SKU[i]["startPoint"])){
-					this.errorList.push("In " + this.SKU[i].name + ", StartPoint must be a number")
+				let isNum = true;
+				if (!this.isNumber(this.SKU[i]["startPoint"])) {
+					this.errorList.push("In ID field " + this.SKU[i].name + ", Start Point must be a number")
+					isNum = false
 				}
-				if(!this.isNumber(this.SKU[i]["currentId"])){
-					this.errorList.push("In " + this.SKU[i].name + ", currentId must be a number")
+				if (!this.isNumber(this.SKU[i]["currentId"])) {
+					this.errorList.push("In ID field " + this.SKU[i].name + ", Current Id must be a number")
+					isNum = false;
 				}
+
+				if(isNum){
+					if(parseInt(this.SKU[i]["startPoint"]) > this.SKU[i]["currentId"]){
+						this.errorList.push("In ID field " + this.SKU[i].name + ", Start Point must be bigger than Current ID")
+					}
+				}
+				
 				break;
 
 				case "SELECT":
-				console.log(this.SKU[i]["name"])
-				console.log(this.SKU[i]["choices"].split(","))
 
 				break;
 
 				case "DATE":
-				console.log(this.SKU[i]["name"])
-				
+
 				break;
 
 				case "VALUE":
-				console.log(this.SKU[i]["name"])
-				
-				break;  		  		
+
+				break;
 			}
-
+			console.log(this.errorList)
 		}
-
+		this.changeDetectorRef.detectChanges()
 	}
 
-	isNumber(val: string): boolean{
+	isNumber(val: string): boolean {
 		return val != null && val !== '' && !isNaN(Number(val.toString()))
 	}
 

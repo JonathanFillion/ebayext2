@@ -1,110 +1,126 @@
 <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link" href="#">Sku Customization</a>
+    <a class="nav-link" href="#">Ebay Sku Generator</a>
   </li>
 </ul>
 
-
-<div *ngIf="this.isSkuCustomizationActive" id="skuContainer" class="container-fluid">
-  <div class="card">
-    <div class="card-body">
-      <div id="skuFieldsAdder" class="input-group">
-        <select class="custom-select" [(ngModel)]="this.currentSelectionType">
-          <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
-        </select>
-        <div class="input-group-append">
-          <input class="form-control" type="text" placeholder="Name" [(ngModel)]="this.currentNameOfNewField">
-        </div>
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" (click)="addSelectionToSkuModel()">Add</button>
-        </div>
-        <!-- <div class="input-group mt-1">
-          <button class="btn btn-primary" type="button" (click)="saveSku()">Save</button>
-        </div> -->
+<div id="skuContainer" class="outside-color container-fluid">
+  <div class="card inside-color spaced-card">
+    <div>
+      <div class="card-body">
+        <table>
+          <tr>
+            <th>Type</th>
+            <th>Name</th>
+          </tr>
+          <tr>
+            <td>
+              <select class="custom-select form-control" [(ngModel)]="this.currentSelectionType">
+                <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" placeholder="Name" 
+              [(ngModel)]="this.currentNameOfNewField">
+            </td>
+            <td>
+              <button class="btn btn-outline-primary" type="button" (click)="addSelectionToSkuModel()">Add</button>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
-  <div id="skuDisplayArea">
-    <div class="card">
-      <div *ngFor="let skuField of this.SKU; let index = index;trackBy:trackByIndex">
-        <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
-          <div><span class="type-hint-small">ID</span></div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Start Point</th>
-              <th>Current Id</th>
-            </tr>
-            <tr>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-              </td>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
-              </td>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="card-body" *ngIf="skuField.TYPE === 'SELECT'">
-          <div><span class="type-hint-small">SELECT</span></div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Fields (separated by commas)</th>
-            </tr>
-            <tr>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-              </td>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="card-body" *ngIf="skuField.TYPE === 'DATE'">
-          <div><span class="type-hint-small">DATE</span></div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Separation Character</th>              
-            </tr>
-            <tr>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-              </td>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="card-body" *ngIf="skuField.TYPE === 'VALUE'">
-          <div><span class="type-hint-small">VALUE</span></div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-            <tr>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-              </td>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="card-footer">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" (click)="moveUp(index)">Move up</button>
-            <button type="button" class="btn btn-secondary btn-sm" (click)="moveDown(index)">Move down</button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="removeSkuElement(index)">Delete</button>
-          </div>
+</div>
+
+<div id="skuDisplayArea" class="container-fluid">
+  <div class="card spaced-card inside-color">
+    <div class="card-header"><span class="type-hint-small">Error Messages</span></div>
+    <div class="card-body" style="height: 80%;">
+      <ul style="list-style-type:none;color:red">
+        <li class="" *ngFor="let error of this.errorList">{{error}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card spaced-card inside-color">
+    <div *ngFor="let skuField of this.SKU; let index = index;trackBy:trackByIndex">
+      <div class="card-header"><span class="type-hint-small">ID</span></div>
+      <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Start Point</th>
+            <th>Current Id</th>
+          </tr>
+          <tr>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+            </td>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
+            </td>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="card-body" *ngIf="skuField.TYPE === 'SELECT'">
+        <div><span class="type-hint-small">SELECT</span></div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Fields (separated by commas)</th>
+          </tr>
+          <tr>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+            </td>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="card-body" *ngIf="skuField.TYPE === 'DATE'">
+        <div><span class="type-hint-small">DATE</span></div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Separation Character</th>              
+          </tr>
+          <tr>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+            </td>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="card-body" *ngIf="skuField.TYPE === 'VALUE'">
+        <div><span class="type-hint-small">VALUE</span></div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+            </td>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="card-footer">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary btn-sm" (click)="moveUp(index)">Move up</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="moveDown(index)">Move down</button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeSkuElement(index)">Delete</button>
         </div>
       </div>
     </div>
