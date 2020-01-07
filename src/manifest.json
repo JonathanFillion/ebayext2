@@ -16,6 +16,72 @@
 			"background.js",
 			"runtime.js"
 		]
-	}
+	},
 
+	"content_scripts": [
+		{
+			"matches": [
+				"https://bulksell.ebay.ca/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://www.ebay.ca/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://bulksell.ebay.com/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://www.ebay.com/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://bulksell.ebay.co.uk/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://www.ebay.co.uk/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://bulksell.ebay.com.au/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		},
+		{
+			"matches": [
+				"https://www.ebay.com.au/*"
+			],
+			"js": [
+				"assets/js/inject.js"
+			]
+		}
+	]
 }

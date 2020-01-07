@@ -6,8 +6,8 @@
 
 <div id="skuContainer" class="outside-color container-fluid">
   <div class="card inside-color spaced-card">
-    <div>
-      <div class="card-body">
+    <div class="card-header"><span class="type-hint-small">Add Menu</span></div>
+    <div class="card-body">
         <table>
           <tr>
             <th>Type</th>
@@ -24,20 +24,20 @@
               [(ngModel)]="this.currentNameOfNewField">
             </td>
             <td>
-              <button class="btn btn-outline-primary" type="button" (click)="addSelectionToSkuModel()">Add</button>
+              <button class="btn btn-primary" type="button" (click)="addSelectionToSkuModel()">Add</button>
             </td>
           </tr>
         </table>
-      </div>
     </div>
   </div>
 </div>
 
+
 <div id="skuDisplayArea" class="container-fluid">
   <div class="card spaced-card inside-color">
     <div class="card-header"><span class="type-hint-small">Error Messages</span></div>
-    <div class="card-body" style="height: 80%;">
-      <ul style="list-style-type:none;color:red">
+    <div class="card-body">
+      <ul style="color:red">
         <li class="" *ngFor="let error of this.errorList">{{error}}</li>
       </ul>
     </div>
