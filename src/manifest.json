@@ -13,9 +13,9 @@
 	],
 	"background": {
 		"scripts": [
-			"background.js",
-			"runtime.js"
-		]
+			"assets/js/background.js"
+		],
+		"persistent": true
 	},
 
 	"content_scripts": [

@@ -8,42 +8,35 @@
   <div class="card inside-color spaced-card">
     <div class="card-header"><span class="type-hint-small">Add Menu</span></div>
     <div class="card-body">
-        <table>
-          <tr>
-            <th>Type</th>
-            <th>Name</th>
-          </tr>
-          <tr>
-            <td>
-              <select class="custom-select form-control" [(ngModel)]="this.currentSelectionType">
-                <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
-              </select>
-            </td>
-            <td>
-              <input class="form-control" type="text" placeholder="Name" 
-              [(ngModel)]="this.currentNameOfNewField">
-            </td>
-            <td>
-              <button class="btn btn-primary" type="button" (click)="addSelectionToSkuModel()">Add</button>
-            </td>
-          </tr>
-        </table>
+      <div class="row">
+        <div class="col-sm-4">
+          <select class="custom-select form-control" [(ngModel)]="this.currentSelectionType">
+            <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
+          </select>
+        </div>
+        <div  class="col-sm-4">
+          <input class="form-control" type="text" placeholder="Name" 
+          [(ngModel)]="this.currentNameOfNewField"/>
+        </div>
+        <div  class="col-sm-4">
+          <button class="btn btn-primary form-control" type="button" (click)="addSelectionToSkuModel()">Add</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 
 <div id="skuDisplayArea" class="container-fluid">
   <div class="card spaced-card inside-color">
     <div class="card-header"><span class="type-hint-small">Error Messages</span></div>
     <div class="card-body">
       <ul style="color:red">
-        <li class="" *ngFor="let error of this.errorList">{{error}}</li>
+        <li class="" *ngFor="let error of this.errorList;">{{error}}</li>
       </ul>
     </div>
   </div>
   <div class="card spaced-card inside-color">
-    <div *ngFor="let skuField of this.SKU; let index = index;trackBy:trackByIndex">
+    <div *ngFor="let skuField of this.SKU;let index = index;trackBy:trackByIndex">
       <div class="card-header"><span class="type-hint-small">ID</span></div>
       <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
         <table>
@@ -116,6 +109,24 @@
           </tr>
         </table>
       </div>
+      <div class="card-body" *ngIf="skuField.TYPE === 'CONST'">
+        <div><span class="type-hint-small">CONSTANT</span></div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+            </td>
+            <td>
+              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
+            </td>
+          </tr>
+        </table>
+      </div>
+
       <div class="card-footer">
         <div class="btn-group">
           <button type="button" class="btn btn-primary btn-sm" (click)="moveUp(index)">Move up</button>

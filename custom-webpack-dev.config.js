@@ -5,8 +5,5 @@ module.exports = {...config,
     mode: 'development',
     plugins: [new ExtensionReloader({
         reloadPage: true,
-        entries: {
-            background: 'background'
-        }
     })]
 }

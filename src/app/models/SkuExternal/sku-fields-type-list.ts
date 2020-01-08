@@ -11,5 +11,6 @@ export class SkuFieldsTypeList {
 		this.listOfFields.push(new SkuFieldType("Selection Field", "SELECT"))
 		this.listOfFields.push(new SkuFieldType("Current Date", "DATE"))
 		this.listOfFields.push(new SkuFieldType("Custom Value", "VALUE"))
+		this.listOfFields.push(new SkuFieldType("Constant Value", "CONST"))
 	}
 }

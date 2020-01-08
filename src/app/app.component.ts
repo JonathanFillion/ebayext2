@@ -4,6 +4,8 @@ import { SkuIdField } from './models/SkuInternals/sku-id-field';
 import { SkuSelectionField } from './models/SkuInternals/sku-selection-field';
 import { SkuDateField } from './models/SkuInternals/sku-date-field';
 import { SkuValueField } from './models/SkuInternals/sku-value-field';
+import { SkuValueConstantField } from './models/SkuInternals/sku-value-constant-field';
+
 
 @Component({
 	selector: 'app-root',
@@ -54,6 +56,10 @@ export class AppComponent {
 				case "VALUE":
 				this.SKU.push(new SkuValueField(skuObject[i]["name"], skuObject[i]["currentValue"]))
 				break;
+
+				case "CONST":
+				this.SKU.push(new SkuValueConstantField(skuObject[i]["name"], skuObject[i]["currentValue"]))
+				break;
 			}
 		}
 		this.changeDetectorRef.detectChanges()
@@ -80,6 +86,10 @@ export class AppComponent {
 
 			case "VALUE":
 			this.SKU.push(new SkuValueField(this.currentNameOfNewField, ""))
+			break;
+
+			case "CONST":
+			this.SKU.push(new SkuValueConstantField(this.currentNameOfNewField, ""))
 			break;
 		}
 
@@ -165,6 +175,10 @@ export class AppComponent {
 				break;
 
 				case "VALUE":
+
+				break;
+
+				case "CONST":
 
 				break;
 			}
