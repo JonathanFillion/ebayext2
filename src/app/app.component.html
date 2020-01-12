@@ -28,6 +28,14 @@
 
 <div id="skuDisplayArea" class="container-fluid">
   <div class="card spaced-card inside-color">
+    <div class="card-header"><span class="type-hint-small">Current Sku Structure</span></div>
+    <div class="card-body">
+      <div>
+        <input type="text" name="skuStructureMock" [disabled]="true" [(ngModel)]="this.mockedSku">
+      </div>
+    </div>
+  </div>
+  <div class="card spaced-card inside-color">
     <div class="card-header"><span class="type-hint-small">Error Messages</span></div>
     <div class="card-body">
       <ul style="color:red">
@@ -37,8 +45,8 @@
   </div>
   <div class="card spaced-card inside-color">
     <div *ngFor="let skuField of this.SKU;let index = index;trackBy:trackByIndex">
-      <div class="card-header"><span class="type-hint-small">ID</span></div>
       <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
+        <div><span class="type-hint-small">ID</span></div>
         <table>
           <tr>
             <th>Name</th>

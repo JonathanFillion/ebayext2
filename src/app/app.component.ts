@@ -1,3 +1,4 @@
+
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { SkuFieldsTypeList } from './models/SkuExternal/sku-fields-type-list';
 import { SkuIdField } from './models/SkuInternals/sku-id-field';
@@ -22,6 +23,7 @@ export class AppComponent {
 	isSkuCustomizationActive = true;
 	isPrefillingActive = false;
 	errorList: string[] = []
+	mockedSku: string = ""
 
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
@@ -62,6 +64,7 @@ export class AppComponent {
 				break;
 			}
 		}
+		this.mockSku()
 		this.changeDetectorRef.detectChanges()
 	}
 
@@ -139,9 +142,44 @@ export class AppComponent {
 
 	saveSku() {
 		this.validateSku()
+		this.mockSku()
 		this._skuStateWhenSaved = JSON.stringify(this.SKU)
 		chrome.storage.local.set({ sku: this._skuStateWhenSaved });
 	}
+
+	mockSku(){
+
+		this.mockedSku = "";
+
+		for(let i = 0 ; i < this.SKU.length; i++) {
+
+			switch(this.SKU[i]["TYPE"]){
+
+				case "ID":
+				this.mockedSku = this.mockedSku + this.SKU[i]["currentId"]
+				break;
+
+				case "SELECT":
+				this.mockedSku = this.mockedSku + this.SKU[i]["name"]
+				break;
+
+				case "DATE":
+				this.mockedSku = this.mockedSku + this.SKU[i]["name"]
+				break;
+
+				case "VALUE":
+				this.mockedSku = this.SKU[i]["currentValue"] ? this.mockedSku + this.SKU[i]["currentValue"] : this.mockedSku + this.SKU[i]["name"]
+				break;
+
+				case "CONST":
+				this.mockedSku = this.SKU[i]["currentValue"] ? this.mockedSku + this.SKU[i]["currentValue"] : this.mockedSku + this.SKU[i]["name"]
+				break;
+			}
+
+		}
+
+		this.changeDetectorRef.detectChanges()
+	} 
 
 	validateSku() {
 		this.errorList = [];
