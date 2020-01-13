@@ -30,8 +30,8 @@
   <div class="card spaced-card inside-color">
     <div class="card-header"><span class="type-hint-small">Current Sku Structure</span></div>
     <div class="card-body">
-      <div>
-        <input type="text" name="skuStructureMock" [disabled]="true" [(ngModel)]="this.mockedSku">
+      <div class="ext-div">
+        <span class="faux-input">{{this.mockedSku}}</span>
       </div>
     </div>
   </div>
@@ -71,7 +71,8 @@
         <table>
           <tr>
             <th>Name</th>
-            <th>Fields (separated by commas)</th>
+            <th>Fields (comma-separated)</th>
+            <!-- <th>Selection</th> -->
           </tr>
           <tr>
             <td>
@@ -80,6 +81,13 @@
             <td>
               <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
             </td>
+   <!--<td *ngIf="this.SKU[index].choices.split(',').length">
+              <select selectedIndex="parseInt(this.SKU[index]['currentValue'])" (change)="selectAction($event,index)" class="form-control">
+                <option *ngFor="let choice of this.SKU[index].choices.split(',')">
+                  {{choice}}
+                </option>
+              </select>
+            </td> -->
           </tr>
         </table>
       </div>

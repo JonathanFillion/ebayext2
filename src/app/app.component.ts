@@ -39,8 +39,9 @@ export class AppComponent {
 	}
 
 	createSkuModelFromJson(skuJson: string) {
+		console.log(skuJson)
 		let skuObject: any[] = JSON.parse(skuJson);
-		console.log(skuObject)
+
 		for (let i = 0; i < skuObject.length; i++) {
 			switch (skuObject[i]["TYPE"]) {
 				case "ID":
@@ -48,7 +49,7 @@ export class AppComponent {
 				break;
 
 				case "SELECT":
-				this.SKU.push(new SkuSelectionField(skuObject[i]["name"], skuObject[i]["choices"]))
+				this.SKU.push(new SkuSelectionField(skuObject[i]["name"], skuObject[i]["choices"],skuObject[i]["currentValue"]))
 				break;
 
 				case "DATE":
@@ -64,8 +65,14 @@ export class AppComponent {
 				break;
 			}
 		}
+		console.log(this.SKU)
 		this.mockSku()
 		this.changeDetectorRef.detectChanges()
+	}
+
+	selectAction(elem, index){
+		this.SKU[index]["currentValue"] = elem.target.selectedIndex
+		this.saveSku()
 	}
 
 	addSelectionToSkuModel() {
@@ -80,7 +87,7 @@ export class AppComponent {
 			break;
 
 			case "SELECT":
-			this.SKU.push(new SkuSelectionField(this.currentNameOfNewField, ""))
+			this.SKU.push(new SkuSelectionField(this.currentNameOfNewField, "", null))
 			break;
 
 			case "DATE":
@@ -136,7 +143,6 @@ export class AppComponent {
 	}
 
 	trackByIndex(index: number, obj: any) {
-		console.log("duh")
 		return index;
 	}
 
@@ -220,7 +226,6 @@ export class AppComponent {
 
 				break;
 			}
-			console.log(this.errorList)
 		}
 		this.changeDetectorRef.detectChanges()
 	}
