@@ -30,7 +30,7 @@
   <div class="card spaced-card inside-color">
     <div class="card-header"><span class="type-hint-small">Current Sku Structure</span></div>
     <div class="card-body">
-      <div class="ext-div">
+      <div *ngIf="this.mockedSku !== ''" class="ext-div">
         <span class="faux-input">{{this.mockedSku}}</span>
       </div>
     </div>
@@ -50,16 +50,15 @@
         <table>
           <tr>
             <th>Name</th>
-            <th>Start Point</th>
             <th>Current Id</th>
           </tr>
           <tr>
             <td>
               <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
             </td>
-            <td>
+     <!--   <td>
               <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
-            </td>
+            </td> -->
             <td>
               <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
             </td>

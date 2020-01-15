@@ -45,7 +45,7 @@ export class AppComponent {
 		for (let i = 0; i < skuObject.length; i++) {
 			switch (skuObject[i]["TYPE"]) {
 				case "ID":
-				this.SKU.push(new SkuIdField(skuObject[i]["name"], skuObject[i]["startPoint"], skuObject[i]["currentId"]))
+				this.SKU.push(new SkuIdField(skuObject[i]["name"], skuObject[i]["currentId"]))
 				break;
 
 				case "SELECT":
@@ -83,7 +83,7 @@ export class AppComponent {
 
 		switch (this.currentSelectionType) {
 			case "ID":
-			this.SKU.push(new SkuIdField(this.currentNameOfNewField, 0, 0))
+			this.SKU.push(new SkuIdField(this.currentNameOfNewField, 0))
 			break;
 
 			case "SELECT":
@@ -192,20 +192,9 @@ export class AppComponent {
 		for (let i = 0; i < this.SKU.length; i++) {
 			switch (this.SKU[i]["TYPE"]) {
 				case "ID":
-				let isNum = true;
-				if (!this.isNumber(this.SKU[i]["startPoint"])) {
-					this.errorList.push("In ID field " + this.SKU[i].name + ", Start Point must be a number")
-					isNum = false
-				}
+				
 				if (!this.isNumber(this.SKU[i]["currentId"])) {
 					this.errorList.push("In ID field " + this.SKU[i].name + ", Current Id must be a number")
-					isNum = false;
-				}
-
-				if(isNum){
-					if(parseInt(this.SKU[i]["startPoint"]) > this.SKU[i]["currentId"]){
-						this.errorList.push("In ID field " + this.SKU[i].name + ", Start Point must be bigger than Current ID")
-					}
 				}
 				
 				break;

@@ -48,56 +48,82 @@ function genSkuControlMenu(){
 	for(let i = 0 ; i < skuStructure.length; i++){
 		switch (skuStructure[i].TYPE) {
 			case "ID":
-				//if edited in popup, will it change in gensku button action ?
-				break;
+			var tr = document.createElement("tr")
+			var td1 = document.createElement("td")
+			var td2 = document.createElement("td")
+			td1.style = tdStyles
+			td2.style = tdStyles
+			var div1 = document.createElement("div")
+			var input = document.createElement("input")
+			input.disabled = true;
+			input.value = skuStructure[i]["name"]
+			div1.appendChild(input)
+			td1.appendChild(div1)
+			tr.appendChild(td1)
 
-				case "SELECT":
-				console.log("SELECT")
-				var tr = document.createElement("tr")
-				var td1 = document.createElement("td")
-				var td2 = document.createElement("td")
-				td1.style = tdStyles
-				td2.style = tdStyles
-				var div1 = document.createElement("div")
-				var input = document.createElement("input")
-				input.disabled = true;
-				input.value = skuStructure[i]["name"]
-				div1.appendChild(input)
-				td1.appendChild(div1)
-				tr.appendChild(td1)
-				
-				var div2 = document.createElement("div")
-				var select = document.createElement("select")
-				var choices = skuStructure[i]["choices"].split(",");
-
-				for(let j = 0; j < choices.length; j++) {
-					var opt = document.createElement("option")
-					opt.innerText = choices[j];
-					select.appendChild(opt)
-				}
-
-				if(skuStructure[i]["currentValue"] != null){
-					select.selectedIndex = parseInt(skuStructure[i]["currentValue"])
+			var div2 = document.createElement("div")
+			var input = document.createElement("input")
+			input.value = skuStructure[i]["currentId"]
+			input.onchange = function(){
+				if(isNumeric(this.value)){
+					skuStructure[i]["currentId"] = this.value
 				} else {
-					skuStructure[i]["currentValue"] = "0"
-					select.selectedIndex = parseInt(skuStructure["currentValue"])
-
+					this.value = skuStructure[i]["currentId"]
 				}
 				saveSku()
-				select.onchange = function(){
-					console.log(this.selectedIndex)
-					console.log(i)
-					skuStructure[i]["currentValue"] = String(this.selectedIndex)
-					saveSku()
-				}
-				div2.appendChild(select)
-				td2.appendChild(div2)
-				tr.appendChild(td1)
-				tr.appendChild(td2)
-				table_menu.appendChild(tr)
-				break;
+			}
+			
+			div2.appendChild(input)
+			td2.appendChild(div2)
+			tr.appendChild(td2)
+			table_menu.appendChild(tr)
+			break;
 
-				case "DATE":
+			case "SELECT":
+			console.log("SELECT")
+			var tr = document.createElement("tr")
+			var td1 = document.createElement("td")
+			var td2 = document.createElement("td")
+			td1.style = tdStyles
+			td2.style = tdStyles
+			var div1 = document.createElement("div")
+			var input = document.createElement("input")
+			input.disabled = true;
+			input.value = skuStructure[i]["name"]
+			div1.appendChild(input)
+			td1.appendChild(div1)
+			tr.appendChild(td1)
+
+			var div2 = document.createElement("div")
+			var select = document.createElement("select")
+			var choices = skuStructure[i]["choices"].split(",");
+
+			for(let j = 0; j < choices.length; j++) {
+				var opt = document.createElement("option")
+				opt.innerText = choices[j];
+				select.appendChild(opt)
+			}
+
+			if(skuStructure[i]["currentValue"] != null){
+				select.selectedIndex = parseInt(skuStructure[i]["currentValue"])
+			} else {
+				skuStructure[i]["currentValue"] = "0"
+				select.selectedIndex = parseInt(skuStructure["currentValue"])
+
+			}
+			saveSku()
+			select.onchange = function(){
+				skuStructure[i]["currentValue"] = String(this.selectedIndex)
+				saveSku()
+			}
+			div2.appendChild(select)
+			td2.appendChild(div2)
+			tr.appendChild(td1)
+			tr.appendChild(td2)
+			table_menu.appendChild(tr)
+			break;
+
+			case "DATE":
 				//If I change separator, will it be reflected in gensku action
 				break;
 
@@ -121,7 +147,6 @@ function genSkuControlMenu(){
 				var input = document.createElement("input")
 				input.value = skuStructure[i]["currentValue"]
 				input.onchange = function(){
-					console.log(i)
 					skuStructure[i]["currentValue"] = this.value
 					saveSku()
 				}
@@ -159,13 +184,13 @@ function genSkuControlMenu(){
 		for(let i = 0 ; i < skuStructure.length; i++){
 			switch (skuStructure[i].TYPE) {
 				case "ID":
-				skuStructure[i]["currentValue"] = String(parseInt(skuStructure[i]["currentValue"]) + 1)
-				thesku = thesku + skuStructure[i]["currentValue"]
+				skuStructure[i]["currentId"] = (parseInt(skuStructure[i]["currentId"]) + 1).toString()
+				thesku = thesku + skuStructure[i]["currentId"]
 				saveSku()
 				break;
 
 				case "SELECT":
-				thesku = thesku + skuStructure[i]["choices"][parseInt(skuStructure[i]["currentValue"])]
+				thesku = thesku + skuStructure[i]["choices"].split(",")[parseInt(skuStructure[i]["currentValue"])]
 				break;
 
 				case "DATE":
@@ -183,6 +208,13 @@ function genSkuControlMenu(){
 				break;
 			}
 		}
+
+		listingSku.value = thesku;
+
+	}
+
+	function isNumeric(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
 	}
 
 
