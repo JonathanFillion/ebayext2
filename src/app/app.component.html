@@ -1,12 +1,11 @@
 <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link" href="#">Ebay Sku Generator</a>
+    <a class="nav-link"><b>Ebay Sku Generator</b></a>
   </li>
 </ul>
-
 <div id="skuContainer" class="outside-color container-fluid">
   <div class="card inside-color spaced-card">
-    <div class="card-header"><span class="type-hint-small">Add Menu</span></div>
+    <div class="card-header"><span>Add element</span></div>
     <div class="card-body">
       <div class="row">
         <div class="col-sm-4">
@@ -14,7 +13,7 @@
             <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
           </select>
         </div>
-        <div  class="col-sm-4">
+        <div class="col-sm-4">
           <input class="form-control" type="text" placeholder="Name" 
           [(ngModel)]="this.currentNameOfNewField"/>
         </div>
@@ -22,21 +21,31 @@
           <button class="btn btn-primary form-control" type="button" (click)="addSelectionToSkuModel()">Add</button>
         </div>
       </div>
+      <div class="row" style="padding-top: 8px;">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <button  class="btn btn-danger form-control" type="button" (click)="deleteSku()">Delete Sku</button>
+        </div>
+      </div>
+      <div *ngIf="this.smallErrorMessage !== ''" class="row" style="margin-top: 8px;">
+        <div class="col-sm-12" ><span style="color: red;">{{this.smallErrorMessage}}</span></div>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="skuDisplayArea" class="container-fluid">
   <div class="card spaced-card inside-color">
-    <div class="card-header"><span class="type-hint-small">Current Sku Structure</span></div>
+    <div class="card-header"><span>Sku Structure</span></div>
     <div class="card-body">
-      <div *ngIf="this.mockedSku !== ''" class="ext-div">
-        <span class="faux-input">{{this.mockedSku}}</span>
+      <div *ngIf="this.mockedSku !== ''">
+        <span>{{this.mockedSku}}</span>
       </div>
     </div>
   </div>
   <div class="card spaced-card inside-color">
-    <div class="card-header"><span class="type-hint-small">Error Messages</span></div>
+    <div class="card-header"><span>Error Messages</span></div>
     <div class="card-body">
       <ul style="color:red">
         <li class="" *ngFor="let error of this.errorList;">{{error}}</li>

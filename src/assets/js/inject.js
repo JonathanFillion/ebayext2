@@ -20,13 +20,13 @@ function removePayingOptions() {
 }
 
 function genSkuControlMenu(){
-	console.log("genSkuControlMenu")
 	var tdStyles = "padding: 8px;border: 1px solid #dddddd;"
 	var thStyles = "padding: 8px;border: 1px solid #dddddd;"
 
 
 	var sku_area = document.getElementById("editpaneSect_CustomLabel");
 	var container = document.createElement("div")
+	container.id = "superduperskugen"
 	var titleContainer = document.createElement("div")
 	var title = document.createElement("span")
 	title.innerText = "Sku Control Menu"
@@ -44,7 +44,6 @@ function genSkuControlMenu(){
 	tr.appendChild(th1)
 	tr.appendChild(th2)
 	table_menu.appendChild(tr);
-	console.log(skuStructure)
 	for(let i = 0 ; i < skuStructure.length; i++){
 		switch (skuStructure[i].TYPE) {
 			case "ID":
@@ -60,7 +59,6 @@ function genSkuControlMenu(){
 			div1.appendChild(input)
 			td1.appendChild(div1)
 			tr.appendChild(td1)
-
 			var div2 = document.createElement("div")
 			var input = document.createElement("input")
 			input.value = skuStructure[i]["currentId"]
@@ -178,14 +176,19 @@ function genSkuControlMenu(){
 		sku_area.appendChild(container);
 	}
 
+	function deleteSkuControlMenu(){
+		var skuControlPanel =  document.getElementById("superduperskugen")
+		skuControlPanel.remove()
+	}
+
 	function generateSku() {
 		let listingSku = document.getElementById("editpane_skuNumber");
 		let thesku = ""
 		for(let i = 0 ; i < skuStructure.length; i++){
 			switch (skuStructure[i].TYPE) {
 				case "ID":
-				skuStructure[i]["currentId"] = (parseInt(skuStructure[i]["currentId"]) + 1).toString()
 				thesku = thesku + skuStructure[i]["currentId"]
+				skuStructure[i]["currentId"] = (parseInt(skuStructure[i]["currentId"]) + 1).toString()
 				saveSku()
 				break;
 
@@ -210,7 +213,8 @@ function genSkuControlMenu(){
 		}
 
 		listingSku.value = thesku;
-
+		deleteSkuControlMenu()
+		genSkuControlMenu()
 	}
 
 	function isNumeric(n) {
@@ -219,48 +223,82 @@ function genSkuControlMenu(){
 
 
 	function saveSku() {
-		console.log("in save")
-		console.log(skuStructure)
 		chrome.storage.local.set({sku: JSON.stringify(skuStructure)})
 	}
 
 	function main(me) {
 		/*Ebay Bulk Listing Prefiller*/
-		if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") 
-			&& me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0
-	//&& me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&&DraftURL=https://www.ebay.ca/sh/lst/drafts") !== 0
-	) {
-			removePayingOptions()
-		genSkuControlMenu()
+		if(me.url.includes("bulksell.ebay.ca")){
+			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && (me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0 || me.url.localeCompare("https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&&DraftURL=") !== 0)) {
+				console.log("Create your listing")
+				genSkuControlMenu()
+			}
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
+				console.log("Relist your listing")
+				genSkuControlMenu()
+			}
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
+				console.log("Revise your listing")
+				genSkuControlMenu()
+			} 
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
+				console.log("Sell similar")
+				genSkuControlMenu()
+			}
+		} else if(me.url.includes("bulksell.ebay.com")) {
+			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && me.url.localeCompare("https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0) {
+				console.log("Create your listing")
+				genSkuControlMenu()
+			}
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing")) {
+				console.log("Relist your listing")
+				genSkuControlMenu()
+			}// && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing")) {
+				console.log("Revise your listing")
+				genSkuControlMenu()
+			} 
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
+				console.log("Sell similar")
+				genSkuControlMenu()
+			}
+		} /*else if(me.url.includes("bulksell.ebay.co.uk")) {
+			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && me.url.localeCompare("https://bulksell.ebay.co.uk/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0) {
+				console.log("Create your listing")
+				genSkuControlMenu()
+			}
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing")) {
+				console.log("Relist your listing")
+				genSkuControlMenu()
+			}// && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing")) {
+				console.log("Revise your listing")
+				genSkuControlMenu()
+			} 
+			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
+				console.log("Sell similar")
+				genSkuControlMenu()
+			}
+		}*/
 	}
 
-	else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
-		removePayingOptions()
-		genSkuControlMenu()
-	}
-	else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
-		removePayingOptions()
-		genSkuControlMenu()
-	} 
-	else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
-		removePayingOptions()
-		genSkuControlMenu()
-	}
-}
+	skuStructure = []
 
-skuStructure = []
+	chrome.extension.sendMessage({}, function(me) {
+		var readyStateCheckInterval = setInterval(function() {
 
-chrome.extension.sendMessage({}, function(me) {
-	var readyStateCheckInterval = setInterval(function() {
+			if (document.readyState === "complete") {
+				clearInterval(readyStateCheckInterval);
+				chrome.storage.local.get(['sku'], function(result) {
+					if(result.sku){
+						skuStructure = JSON.parse(result.sku)
+						main(me)
+					}
+				})
+			}
+		}, 2500);
+	});
 
-		if (document.readyState === "complete") {
-			clearInterval(readyStateCheckInterval);
-			chrome.storage.local.get(['sku'], function(result) {
-				if(result.sku){
-					skuStructure = JSON.parse(result.sku)
-					main(me)
-				}
-			})
-		}
-	}, 2500);
-});
+
+
+//&& me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&&DraftURL=https://www.ebay.ca/sh/lst/drafts") !== 0

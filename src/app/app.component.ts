@@ -17,6 +17,7 @@ export class AppComponent {
 
 	currentSelectionType: string;
 	currentNameOfNewField: string;
+	smallErrorMessage: string = "";
 	sfl: SkuFieldsTypeList;
 	SKU: any[] = [];
 	_skuStateWhenSaved: string;
@@ -65,8 +66,8 @@ export class AppComponent {
 				break;
 			}
 		}
-		console.log(this.SKU)
 		this.mockSku()
+		this.validateSku()
 		this.changeDetectorRef.detectChanges()
 	}
 
@@ -76,9 +77,11 @@ export class AppComponent {
 	}
 
 	addSelectionToSkuModel() {
-		if (this.currentSelectionType === "" || this.currentSelectionType === undefined) {
-			console.log("Display error message")
+		if (this.currentSelectionType === "" || this.currentSelectionType === undefined || this.currentNameOfNewField === "") {
+			this.smallErrorMessage = "You need to select field type and fill the name";
 			return;
+		} else {
+			this.smallErrorMessage = "";
 		}
 
 		switch (this.currentSelectionType) {
@@ -102,7 +105,6 @@ export class AppComponent {
 			this.SKU.push(new SkuValueConstantField(this.currentNameOfNewField, ""))
 			break;
 		}
-
 		this.saveSku()
 		this.currentNameOfNewField = ""
 	}
@@ -153,6 +155,11 @@ export class AppComponent {
 		chrome.storage.local.set({ sku: this._skuStateWhenSaved });
 	}
 
+	deleteSku(){
+		this.SKU = []
+		this.saveSku()
+	}
+
 	mockSku(){
 
 		this.mockedSku = "";
@@ -181,11 +188,9 @@ export class AppComponent {
 				this.mockedSku = this.SKU[i]["currentValue"] ? this.mockedSku + this.SKU[i]["currentValue"] : this.mockedSku + this.SKU[i]["name"]
 				break;
 			}
-
 		}
-
 		this.changeDetectorRef.detectChanges()
-	} 
+	}
 
 	validateSku() {
 		this.errorList = [];
@@ -222,5 +227,4 @@ export class AppComponent {
 	isNumber(val: string): boolean {
 		return val != null && val !== '' && !isNaN(Number(val.toString()))
 	}
-
 }
