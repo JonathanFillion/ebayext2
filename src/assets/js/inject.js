@@ -226,12 +226,35 @@ function genSkuControlMenu(){
 		chrome.storage.local.set({sku: JSON.stringify(skuStructure)})
 	}
 
+	function doPrefills(){
+		let condition = document.getElementById("editpane_condDesc");
+		let price = document.getElementById("binPrice");
+		let size1 = document.getElementById("pkgLength");
+		let size2 = document.getElementById("pkgWidth");
+		let size3 = document.getElementById("pkgHeight");
+		let majorWeight = document.getElementById("majorUnitWeight");
+		let minorWeight = document.getElementById("minorUnitWeight");
+
+		size1.value = prefills["size1"]
+		size2.value = prefills["size2"]
+		size3.value = prefills["size3"]
+		majorWeight.value = prefills["lwu"]
+		minorWeight.value = prefills["swu"]
+		condition.value = prefills["condition"]
+		price.value = prefills["price"]
+		
+	}
+
 	function main(me) {
+
 		/*Ebay Bulk Listing Prefiller*/
 		if(me.url.includes("bulksell.ebay.ca")){
 			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && (me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0 || me.url.localeCompare("https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&&DraftURL=") !== 0)) {
 				console.log("Create your listing")
 				genSkuControlMenu()
+				if(prefills){
+					doPrefills()
+				}
 			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
 				console.log("Relist your listing")
@@ -249,6 +272,9 @@ function genSkuControlMenu(){
 			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && me.url.localeCompare("https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0) {
 				console.log("Create your listing")
 				genSkuControlMenu()
+				if(prefills){
+					doPrefills()
+				}
 			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing")) {
 				console.log("Relist your listing")
@@ -283,17 +309,22 @@ function genSkuControlMenu(){
 	}
 
 	skuStructure = []
+	prefills = false;
 
 	chrome.extension.sendMessage({}, function(me) {
 		var readyStateCheckInterval = setInterval(function() {
 
 			if (document.readyState === "complete") {
 				clearInterval(readyStateCheckInterval);
-				chrome.storage.local.get(['sku'], function(result) {
+				chrome.storage.local.get(['sku', 'prefills'], function(result) {
 					if(result.sku){
 						skuStructure = JSON.parse(result.sku)
+						if(result.prefills){
+							prefills = JSON.parse(result.prefills)
+						}
 						main(me)
 					}
+					
 				})
 			}
 		}, 2500);

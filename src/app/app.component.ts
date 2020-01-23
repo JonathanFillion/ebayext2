@@ -6,7 +6,7 @@ import { SkuSelectionField } from './models/SkuInternals/sku-selection-field';
 import { SkuDateField } from './models/SkuInternals/sku-date-field';
 import { SkuValueField } from './models/SkuInternals/sku-value-field';
 import { SkuValueConstantField } from './models/SkuInternals/sku-value-constant-field';
-
+import { Prefills } from './models/prefills.class'; 
 
 @Component({
 	selector: 'app-root',
@@ -14,7 +14,7 @@ import { SkuValueConstantField } from './models/SkuInternals/sku-value-constant-
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+	prefills: Prefills;
 	currentSelectionType: string;
 	currentNameOfNewField: string;
 	smallErrorMessage: string = "";
@@ -25,18 +25,41 @@ export class AppComponent {
 	isPrefillingActive = false;
 	errorList: string[] = []
 	mockedSku: string = ""
-
+	skuIsDisplayed = true;
+	fillingsIsDisplayed = false;
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
 		this.sfl = new SkuFieldsTypeList()
+		this.prefills = new Prefills()
 	}
 
 	ngOnInit() {
-		chrome.storage.local.get(['sku'], (result) => {
+		chrome.storage.local.get(['sku', 'prefills'], (result) => {
 			if(result.sku){
 				this.createSkuModelFromJson(result.sku);
 			}
+			if(result.prefills){
+				this.loadPrefillsFromJson(result.prefills)
+			}
 		})
+	}
+
+	savePrefills() {
+		chrome.storage.local.set({prefills : JSON.stringify(this.prefills)})
+	}
+
+	displaySku(){
+		this.skuIsDisplayed = true
+		this.fillingsIsDisplayed = false
+	}
+
+	displayFillings(){
+		this.skuIsDisplayed = false
+		this.fillingsIsDisplayed = true
+	}
+
+	loadPrefillsFromJson(prefillsJson:string){
+		this.prefills = JSON.parse(prefillsJson)
 	}
 
 	createSkuModelFromJson(skuJson: string) {
