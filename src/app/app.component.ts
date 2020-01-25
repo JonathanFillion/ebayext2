@@ -6,7 +6,9 @@ import { SkuSelectionField } from './models/SkuInternals/sku-selection-field';
 import { SkuDateField } from './models/SkuInternals/sku-date-field';
 import { SkuValueField } from './models/SkuInternals/sku-value-field';
 import { SkuValueConstantField } from './models/SkuInternals/sku-value-constant-field';
-import { Prefills } from './models/prefills.class'; 
+import { Prefills } from './models/prefills'; 
+import { Options } from './models/options'; 
+
 
 @Component({
 	selector: 'app-root',
@@ -15,6 +17,7 @@ import { Prefills } from './models/prefills.class';
 })
 export class AppComponent {
 	prefills: Prefills;
+	options: Options
 	currentSelectionType: string;
 	currentNameOfNewField: string;
 	smallErrorMessage: string = "";
@@ -27,19 +30,24 @@ export class AppComponent {
 	mockedSku: string = ""
 	skuIsDisplayed = true;
 	fillingsIsDisplayed = false;
+	optionsIsDisplayed = false;
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
 		this.sfl = new SkuFieldsTypeList()
 		this.prefills = new Prefills()
+		this.options = new Options()
 	}
 
 	ngOnInit() {
-		chrome.storage.local.get(['sku', 'prefills'], (result) => {
+		chrome.storage.local.get(['sku', 'prefills', 'options'], (result) => {
 			if(result.sku){
 				this.createSkuModelFromJson(result.sku);
 			}
 			if(result.prefills){
 				this.loadPrefillsFromJson(result.prefills)
+			}
+			if(result.options){
+				this.loadOptionsFromJson(result.options)
 			}
 		})
 	}
@@ -48,18 +56,34 @@ export class AppComponent {
 		chrome.storage.local.set({prefills : JSON.stringify(this.prefills)})
 	}
 
+	saveOptions(){
+		console.log(this.options)
+		chrome.storage.local.set({options:JSON.stringify(this.options)})
+	}
 	displaySku(){
 		this.skuIsDisplayed = true
 		this.fillingsIsDisplayed = false
+		this.optionsIsDisplayed = false;
 	}
 
 	displayFillings(){
 		this.skuIsDisplayed = false
 		this.fillingsIsDisplayed = true
+		this.optionsIsDisplayed = false;
+	}
+
+	displayOptions() {
+		this.skuIsDisplayed = false
+		this.fillingsIsDisplayed = false
+		this.optionsIsDisplayed = true;
 	}
 
 	loadPrefillsFromJson(prefillsJson:string){
 		this.prefills = JSON.parse(prefillsJson)
+	}
+
+	loadOptionsFromJson(optionsJson:string){
+		this.options = JSON.parse(optionsJson)
 	}
 
 	createSkuModelFromJson(skuJson: string) {

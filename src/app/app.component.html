@@ -1,14 +1,32 @@
-<ul class="nav nav-tabs">
+<!-- <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a (click)="displaySku()" href="#" class="nav-link"><b>Ebay Sku Generator</b></a>
+    <a (click)="displaySku()" class="nav-link"><b>Ebay Sku Generator</b></a>
   </li>
   <li class="nav-item">
-    <a (click)="displayFillings()" href="#" class="nav-link"><b>Fields Auto-filling</b></a>
+    <a (click)="displayFillings()" class="nav-link"><b>Fields Auto-filling</b></a>
+  </li>
+  <li class="nav-item">
+    <a (click)="displayOptions()" class="nav-link"><b>General Options</b></a>
   </li>
 </ul>
+-->
+<nav class="navbar navbar-light bg-light">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a (click)="displaySku()" class="nav-link"><b>Ebay Sku Generator</b></a>
+    </li>
+    <li class="nav-item">
+      <a (click)="displayFillings()" class="nav-link"><b>Fields Auto-filling</b></a>
+    </li>
+    <li class="nav-item">
+      <a (click)="displayOptions()" class="nav-link"><b>General Options</b></a>
+    </li>
+  </ul>
+</nav>
+
 <div *ngIf="this.skuIsDisplayed">
   <div id="skuContainer" class="outside-color container-fluid">
-    <div class="card inside-color spaced-card">
+    <div class="card spaced-card">
       <div class="card-header"><span>Add element</span></div>
       <div class="card-body">
         <div class="row">
@@ -40,7 +58,7 @@
   </div>
 
   <div id="skuDisplayArea" class="container-fluid">
-    <div class="card spaced-card inside-color">
+    <div class="card spaced-card">
       <div class="card-header"><span>Sku Structure</span></div>
       <div class="card-body">
         <div *ngIf="this.mockedSku !== ''">
@@ -48,7 +66,7 @@
         </div>
       </div>
     </div>
-    <div class="card spaced-card inside-color">
+    <div class="card spaced-card">
       <div class="card-header"><span>Error Messages</span></div>
       <div class="card-body">
         <ul style="color:red">
@@ -56,7 +74,7 @@
         </ul>
       </div>
     </div>
-    <div class="card spaced-card inside-color">
+    <div class="card spaced-card">
       <div *ngFor="let skuField of this.SKU;let index = index;trackBy:trackByIndex">
         <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
           <div><span class="type-hint-small">ID</span></div>
@@ -167,8 +185,8 @@
 </div>
 </div>
 
-<div *ngIf="this.fillingsIsDisplayed">
-  <div class="card">
+<div class="container-fluid" *ngIf="this.fillingsIsDisplayed">
+  <div class="card" style="margin-top: 8px">
     <div class="card-header">Prefilled data</div>
     <div class="card-body">
       <table class="table">
@@ -178,37 +196,61 @@
         </tr>
         <tr>
           <td><span>Condition</span></td>
-          <td><input (change)="this.savePrefills()" [(ngModel)]="this.prefills.condition" type="text" id="condition"></td>
+          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.condition" type="text" id="condition"></td>
         </tr>
         <tr>
           <td><span>Price</span></td>
-          <td><input (change)="this.savePrefills()" [(ngModel)]="this.prefills.price" type="text" id="price"></td>
+          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.price" type="text" id="price"></td>
         </tr>
         <tr>
           <td><span>Size1</span></td>
-          <td><input (change)="this.savePrefills()"  [(ngModel)]="this.prefills.size1"  type="text" id="size1"></td>
+          <td><input class="form-control" (change)="this.savePrefills()"  [(ngModel)]="this.prefills.size1"  type="text" id="size1"></td>
         </tr>
         <tr>
           <td><span>Size2</span></td>
-          <td><input (change)="this.savePrefills()" [(ngModel)]="this.prefills.size2" type="text" id="size2"></td>
+          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size2" type="text" id="size2"></td>
         </tr>
         <tr>
           <td><span>Size3</span></td>
-          <td><input (change)="this.savePrefills()" [(ngModel)]="this.prefills.size3"  type="text" id="size3"></td>
+          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size3"  type="text" id="size3"></td>
         </tr>
         <tr>
           <td><span>Larger Weight Unit</span></td>
-          <td><input (change)="this.savePrefills()" [(ngModel)]="this.prefills.lwu" type="text" id="larger_weight_unit"></td>
+          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.lwu" type="text" id="larger_weight_unit"></td>
         </tr>
         <tr>
           <td><span>Smaller Weight Unit</span></td>
-          <td><input (change)="this.savePrefills()" [(ngModel)]="this.prefills.swu" type="text" id="smaller_weight_unit"></td>
+          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.swu" type="text" id="smaller_weight_unit"></td>
         </tr>
       </table>
     </div>
-    <div class="card-footer"></div>
-    ** This data is saved on change **
   </div>
-
+</div>
+<div style="padding-top: 8px;" class="container-fluid" *ngIf="this.optionsIsDisplayed">
+  <div  class="card">
+    <div class="card-header">Options</div>
+    <div class="card-body">
+      <table class="table">
+        <tr>
+          <th><span>Option</span></th>
+          <th><span>Activation</span></th>
+        </tr>
+        <tr>
+          <td><span>Force SKU filling when listing CREATION (Not for relist, revise, sell similar)</span></td>
+          <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.forceFillCreate" type="checkbox"></td>
+        </tr>
+        <tr>
+          <td><span>
+          Remove paying options</span></td>
+          <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.removePayingOptions" type="checkbox"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 
+<footer class="page-footer font-small blue pt-4">
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <span>DAPI software</span>
+  </div>
+</footer>

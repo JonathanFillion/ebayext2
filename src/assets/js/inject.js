@@ -1,22 +1,29 @@
 
-function removePayingOptions() {
-
-	var boldfeecrap = document.getElementById("bold");
-	var parentofbold = boldfeecrap.parentElement;
-	parentofbold.remove();
-
-	var subtitlecharges = document.getElementById("editpane_subtitle");
-	var parentofsub = subtitlecharges.parentElement.parentElement;
-	parentofsub.remove();
-
-	var galleryPlus = document.getElementById("galleryPlus")
-	var parentofgaleryplus = galleryPlus.parentElement
-	parentofgaleryplus.remove();
-
-	var photoDisplayTypeFee = document.getElementById("photoDisplayType")
-	var parentofdisplaytype = photoDisplayTypeFee.parentElement
-	parentofdisplaytype.remove();
-
+function removePayingOptionsIfEnabled() {
+	
+	if(options.removePayingOptions){
+		try {
+			var boldfeecrap = document.getElementById("bold");
+			var parentofbold = boldfeecrap.parentElement;
+			parentofbold.remove();
+		} catch(e) {}
+		try {
+			var subtitlecharges = document.getElementById("editpane_subtitle");
+			var parentofsub = subtitlecharges.parentElement.parentElement;
+			parentofsub.remove();
+		} catch(e) {}
+		try { 
+			var galleryPlus = document.getElementById("galleryPlus")
+			var parentofgaleryplus = galleryPlus.parentElement
+			parentofgaleryplus.remove();
+		} catch(e) {}
+		try {
+			var photoDisplayTypeFee = document.getElementById("photoDisplayType")
+			var parentofdisplaytype = photoDisplayTypeFee.parentElement
+			parentofdisplaytype.remove();
+		} catch(e){}
+	}
+	
 }
 
 function genSkuControlMenu(){
@@ -78,7 +85,6 @@ function genSkuControlMenu(){
 			break;
 
 			case "SELECT":
-			console.log("SELECT")
 			var tr = document.createElement("tr")
 			var td1 = document.createElement("td")
 			var td2 = document.createElement("td")
@@ -126,7 +132,6 @@ function genSkuControlMenu(){
 				break;
 
 				case "VALUE":
-				console.log("VALUE")
 				var tr = document.createElement("tr")
 				var td1 = document.createElement("td")
 				var td2 = document.createElement("td")
@@ -227,22 +232,43 @@ function genSkuControlMenu(){
 	}
 
 	function doPrefills(){
-		let condition = document.getElementById("editpane_condDesc");
-		let price = document.getElementById("binPrice");
-		let size1 = document.getElementById("pkgLength");
-		let size2 = document.getElementById("pkgWidth");
-		let size3 = document.getElementById("pkgHeight");
-		let majorWeight = document.getElementById("majorUnitWeight");
-		let minorWeight = document.getElementById("minorUnitWeight");
+		try {
+			let condition = document.getElementById("editpane_condDesc");
+			condition.value = prefills["condition"]
+		} 
+		catch (e) {}
+		try {
+			let price = document.getElementById("binPrice");
+			price.value = prefills["price"]
+		} 
+		catch (e) {}
+		try {
+			let size1 = document.getElementById("pkgLength");
+			size1.value = prefills["size1"]
+		}
+		catch (e) {}
+		try{
+			let size2 = document.getElementById("pkgWidth");
+			size2.value = prefills["size2"]
+		} catch (e) {}
+		try {
+			let size3 = document.getElementById("pkgHeight");
+			size3.value = prefills["size3"]
+		} catch (e) {}
+		try {
+			let majorWeight = document.getElementById("majorUnitWeight");
+			majorWeight.value = prefills["lwu"]
+		} catch (e) {}
+		try{
+			let minorWeight = document.getElementById("minorUnitWeight");
+			minorWeight.value = prefills["swu"]
+		} catch (e) {}
+	}
 
-		size1.value = prefills["size1"]
-		size2.value = prefills["size2"]
-		size3.value = prefills["size3"]
-		majorWeight.value = prefills["lwu"]
-		minorWeight.value = prefills["swu"]
-		condition.value = prefills["condition"]
-		price.value = prefills["price"]
-		
+	function fillSkuIfEnabled() {
+		if(options.forceFillCreate){
+			generateSku()
+		}
 	}
 
 	function main(me) {
@@ -250,77 +276,88 @@ function genSkuControlMenu(){
 		/*Ebay Bulk Listing Prefiller*/
 		if(me.url.includes("bulksell.ebay.ca")){
 			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && (me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0 || me.url.localeCompare("https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&&DraftURL=") !== 0)) {
-				console.log("Create your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
+				fillSkuIfEnabled()
 				if(prefills){
 					doPrefills()
 				}
 			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
-				console.log("Relist your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing") && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")) {
-				console.log("Revise your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			} 
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
-				console.log("Sell similar")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			}
 		} else if(me.url.includes("bulksell.ebay.com")) {
 			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && me.url.localeCompare("https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0) {
-				console.log("Create your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
+				fillSkuIfEnabled()
 				if(prefills){
 					doPrefills()
 				}
 			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing")) {
-				console.log("Relist your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
-			}// && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")
+			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing")) {
-				console.log("Revise your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			} 
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
-				console.log("Sell similar")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			}
-		} /*else if(me.url.includes("bulksell.ebay.co.uk")) {
+		} else if(me.url.includes("bulksell.ebay.co.uk")) {
 			if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Create your listing") && me.url.localeCompare("https://bulksell.ebay.co.uk/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem") !== 0) {
-				console.log("Create your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
+				fillSkuIfEnabled()
+				if(prefills){
+					doPrefills()
+				}
 			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing")) {
-				console.log("Relist your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			}// && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing")) {
-				console.log("Revise your listing")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			} 
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Sell similar")) {
-				console.log("Sell similar")
+				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
 			}
-		}*/
+		}
 	}
 
 	skuStructure = []
 	prefills = false;
+	options = false;
+
 
 	chrome.extension.sendMessage({}, function(me) {
 		var readyStateCheckInterval = setInterval(function() {
 
 			if (document.readyState === "complete") {
 				clearInterval(readyStateCheckInterval);
-				chrome.storage.local.get(['sku', 'prefills'], function(result) {
+				chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
 					if(result.sku){
 						skuStructure = JSON.parse(result.sku)
 						if(result.prefills){
 							prefills = JSON.parse(result.prefills)
+						}
+						if(result.options){
+							options = JSON.parse(result.options)
 						}
 						main(me)
 					}
@@ -329,7 +366,3 @@ function genSkuControlMenu(){
 			}
 		}, 2500);
 	});
-
-
-
-//&& me.url.localeCompare("https://bulksell.ebay.ca/ws/eBayISAPI.dll?SingleList&&DraftURL=https://www.ebay.ca/sh/lst/drafts") !== 0
