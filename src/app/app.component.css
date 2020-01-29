@@ -20,3 +20,32 @@
 	max-width: 400px;	
 	border: 1px solid black;
 }
+
+.selected {
+	background-color: #ebebe0 !important;
+}
+
+.col-centered{
+	float: none;
+	margin: 0 auto;
+}
+
+.card {
+	background-color: #ebebe0;
+}
+
+/*.form-control:focus {
+	border-color: inherit;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	outline: none;
+}*/
+
+.font-title {
+	font-family: 'Sigmar One', cursive;
+}
+
+
+.font-app {
+	font-family: 'Muli', sans-serif;
+}

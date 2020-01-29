@@ -28,6 +28,8 @@ export class AppComponent {
 	isPrefillingActive = false;
 	errorList: string[] = []
 	mockedSku: string = ""
+	kaching:number = 5
+
 	skuIsDisplayed = true;
 	fillingsIsDisplayed = false;
 	optionsIsDisplayed = false;
@@ -124,8 +126,8 @@ export class AppComponent {
 	}
 
 	addSelectionToSkuModel() {
-		if (this.currentSelectionType === "" || this.currentSelectionType === undefined || this.currentNameOfNewField === "") {
-			this.smallErrorMessage = "You need to select field type and fill the name";
+		if (this.currentSelectionType === "" || this.currentSelectionType === undefined) {
+			this.smallErrorMessage = "You need to select field type";
 			return;
 		} else {
 			this.smallErrorMessage = "";
@@ -149,7 +151,7 @@ export class AppComponent {
 			break;
 
 			case "CONST":
-			this.SKU.push(new SkuValueConstantField(this.currentNameOfNewField, ""))
+			this.SKU.push(new SkuValueConstantField(this.currentNameOfNewField, this.currentNameOfNewField))
 			break;
 		}
 		this.saveSku()

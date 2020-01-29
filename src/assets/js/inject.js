@@ -232,37 +232,40 @@ function genSkuControlMenu(){
 	}
 
 	function doPrefills(){
-		try {
-			let condition = document.getElementById("editpane_condDesc");
-			condition.value = prefills["condition"]
-		} 
-		catch (e) {}
-		try {
-			let price = document.getElementById("binPrice");
-			price.value = prefills["price"]
-		} 
-		catch (e) {}
-		try {
-			let size1 = document.getElementById("pkgLength");
-			size1.value = prefills["size1"]
+
+		if(options.enablePrefilling){
+			try {
+				let condition = document.getElementById("editpane_condDesc");
+				condition.value = prefills["condition"]
+			} 
+			catch (e) {}
+			try {
+				let price = document.getElementById("binPrice");
+				price.value = prefills["price"]
+			} 
+			catch (e) {}
+			try {
+				let size1 = document.getElementById("pkgLength");
+				size1.value = prefills["size1"]
+			}
+			catch (e) {}
+			try{
+				let size2 = document.getElementById("pkgWidth");
+				size2.value = prefills["size2"]
+			} catch (e) {}
+			try {
+				let size3 = document.getElementById("pkgHeight");
+				size3.value = prefills["size3"]
+			} catch (e) {}
+			try {
+				let majorWeight = document.getElementById("majorUnitWeight");
+				majorWeight.value = prefills["lwu"]
+			} catch (e) {}
+			try{
+				let minorWeight = document.getElementById("minorUnitWeight");
+				minorWeight.value = prefills["swu"]
+			} catch (e) {}
 		}
-		catch (e) {}
-		try{
-			let size2 = document.getElementById("pkgWidth");
-			size2.value = prefills["size2"]
-		} catch (e) {}
-		try {
-			let size3 = document.getElementById("pkgHeight");
-			size3.value = prefills["size3"]
-		} catch (e) {}
-		try {
-			let majorWeight = document.getElementById("majorUnitWeight");
-			majorWeight.value = prefills["lwu"]
-		} catch (e) {}
-		try{
-			let minorWeight = document.getElementById("minorUnitWeight");
-			minorWeight.value = prefills["swu"]
-		} catch (e) {}
 	}
 
 	function fillSkuIfEnabled() {
@@ -347,8 +350,7 @@ function genSkuControlMenu(){
 
 	chrome.extension.sendMessage({}, function(me) {
 		var readyStateCheckInterval = setInterval(function() {
-
-			if (document.readyState === "complete") {
+			if(document.readyState === "complete") {
 				clearInterval(readyStateCheckInterval);
 				chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
 					if(result.sku){
@@ -364,5 +366,5 @@ function genSkuControlMenu(){
 					
 				})
 			}
-		}, 2500);
+		}, 1450);
 	});

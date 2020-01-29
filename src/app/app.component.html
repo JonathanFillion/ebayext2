@@ -1,92 +1,87 @@
-<!-- <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a (click)="displaySku()" class="nav-link"><b>Ebay Sku Generator</b></a>
-  </li>
-  <li class="nav-item">
-    <a (click)="displayFillings()" class="nav-link"><b>Fields Auto-filling</b></a>
-  </li>
-  <li class="nav-item">
-    <a (click)="displayOptions()" class="nav-link"><b>General Options</b></a>
-  </li>
-</ul>
--->
-<nav class="navbar navbar-light bg-light">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a (click)="displaySku()" class="nav-link"><b>Ebay Sku Generator</b></a>
-    </li>
-    <li class="nav-item">
-      <a (click)="displayFillings()" class="nav-link"><b>Fields Auto-filling</b></a>
-    </li>
-    <li class="nav-item">
-      <a (click)="displayOptions()" class="nav-link"><b>General Options</b></a>
-    </li>
-  </ul>
-</nav>
-
-<div *ngIf="this.skuIsDisplayed">
-  <div id="skuContainer" class="outside-color container-fluid">
-    <div class="card spaced-card">
-      <div class="card-header"><span>Add element</span></div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-sm-4">
-            <select class="custom-select form-control" [(ngModel)]="this.currentSelectionType">
-              <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <input class="form-control" type="text" placeholder="Name" 
-            [(ngModel)]="this.currentNameOfNewField"/>
-          </div>
-          <div  class="col-sm-4">
-            <button class="btn btn-primary form-control" type="button" (click)="addSelectionToSkuModel()">Add</button>
-          </div>
-        </div>
-        <div class="row" style="padding-top: 8px;">
-          <div class="col-sm-4"></div>
-          <div class="col-sm-4"></div>
-          <div class="col-sm-4">
-            <button  class="btn btn-danger form-control" type="button" (click)="deleteSku()">Delete Sku</button>
-          </div>
-        </div>
-        <div *ngIf="this.smallErrorMessage !== ''" class="row" style="margin-top: 8px;">
-          <div class="col-sm-12" ><span style="color: red;">{{this.smallErrorMessage}}</span></div>
-        </div>
-      </div>
-    </div>
+  <div class="container-fluid">
+    <span class="font-title"><h4>Ebay Sku Generator (BETA)</h4></span>
   </div>
 
-  <div id="skuDisplayArea" class="container-fluid">
-    <div class="card spaced-card">
-      <div class="card-header"><span>Sku Structure</span></div>
-      <div class="card-body">
-        <div *ngIf="this.mockedSku !== ''">
-          <span>{{this.mockedSku}}</span>
+  <div>
+    <nav class="navbar">
+      <ul class="nav font-app">
+        <li class="nav-item" [ngClass]="{'selected': skuIsDisplayed}" style="background-color: #f5f5f0">
+          <a (click)="displaySku()" href="#" class="nav-link"><b>Sku Generator</b></a>
+        </li>
+        <li class="nav-item" [ngClass]="{'selected': fillingsIsDisplayed}" style="background-color: #f5f5f0">
+          <a (click)="displayFillings()" href="#" class="nav-link"><b>Auto-filling</b></a>
+        </li>
+        <li class="nav-item" [ngClass]="{'selected': optionsIsDisplayed}" style="background-color: #f5f5f0">
+          <a (click)="displayOptions()" href="#" class="nav-link"><b>Options</b></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
+  <div *ngIf="this.skuIsDisplayed">
+    <div id="skuContainer" class="container-fluid font-app">
+      <div class="card" style="margin-top: 8px;">
+        <div class="card-header"><span>Add element</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <select class="custom-select form-control" [(ngModel)]="this.currentSelectionType">
+                <option *ngFor="let field of this.sfl.listOfFields" value="{{field.type}}">{{field.name}}</option>
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <input class="form-control" type="text" placeholder="Name" 
+              [(ngModel)]="this.currentNameOfNewField"/>
+            </div>
+            <div  class="col-sm-4">
+              <button class="btn btn-primary form-control" type="button" (click)="addSelectionToSkuModel()">Add</button>
+            </div>
+          </div>
+          <div class="row" style="padding-top: 8px;">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+              <button  class="btn btn-danger form-control" type="button" (click)="deleteSku()">Delete Sku</button>
+            </div>
+          </div>
+          <div *ngIf="this.smallErrorMessage !== ''" class="row" style="margin-top: 8px;">
+            <div class="col-sm-12" ><span style="color: red;">{{this.smallErrorMessage}}</span></div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card spaced-card">
-      <div class="card-header"><span>Error Messages</span></div>
-      <div class="card-body">
-        <ul style="color:red">
-          <li class="" *ngFor="let error of this.errorList;">{{error}}</li>
-        </ul>
+
+    <div id="skuDisplayArea" class="container-fluid font-app">
+      <div class="card spaced-card">
+        <div class="card-header"><span>Sku Structure</span></div>
+        <div class="card-body">
+          <div *ngIf="this.mockedSku !== ''">
+            <span>{{this.mockedSku}}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="card spaced-card">
-      <div *ngFor="let skuField of this.SKU;let index = index;trackBy:trackByIndex">
-        <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
-          <div><span class="type-hint-small">ID</span></div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Current Id</th>
-            </tr>
-            <tr>
-              <td>
-                <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-              </td>
+      <div class="card spaced-card">
+        <div class="card-header"><span>Error</span></div>
+        <div class="card-body">
+          <ul style="color:red">
+            <li class="" *ngFor="let error of this.errorList;">{{error}}</li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="this.SKU.length !== 0" class="card spaced-card">
+        <div *ngFor="let skuField of this.SKU;let index = index;trackBy:trackByIndex">
+          <div class="card-body" *ngIf="skuField.TYPE === 'ID'">
+            <div><span class="type-hint-small">ID</span></div>
+            <table>
+              <tr>
+                <th>Name</th>
+                <th>Current Id</th>
+              </tr>
+              <tr>
+                <td>
+                  <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                </td>
      <!--   <td>
               <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
             </td> -->
@@ -185,48 +180,48 @@
 </div>
 </div>
 
-<div class="container-fluid" *ngIf="this.fillingsIsDisplayed">
+<div class="container-fluid font-app" *ngIf="this.fillingsIsDisplayed">
   <div class="card" style="margin-top: 8px">
     <div class="card-header">Prefilled data</div>
     <div class="card-body">
-      <table class="table">
+      <table id="preffillTable" class="table">
         <tr>
           <th><span>Field</span></th>
           <th><span>Data</span></th>
         </tr>
         <tr>
           <td><span>Condition</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.condition" type="text" id="condition"></td>
+          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.condition" type="text" id="condition"></td>
         </tr>
         <tr>
           <td><span>Price</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.price" type="text" id="price"></td>
+          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.price" type="text" id="price"></td>
         </tr>
         <tr>
           <td><span>Size1</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()"  [(ngModel)]="this.prefills.size1"  type="text" id="size1"></td>
+          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()"  [(ngModel)]="this.prefills.size1"  type="text" id="size1"></td>
         </tr>
         <tr>
           <td><span>Size2</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size2" type="text" id="size2"></td>
+          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size2" type="text" id="size2"></td>
         </tr>
         <tr>
           <td><span>Size3</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size3"  type="text" id="size3"></td>
+          <td><input [disabled]="!this.options.enablePrefilling"  class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size3"  type="text" id="size3"></td>
         </tr>
         <tr>
           <td><span>Larger Weight Unit</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.lwu" type="text" id="larger_weight_unit"></td>
+          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.lwu" type="text" id="larger_weight_unit"></td>
         </tr>
         <tr>
           <td><span>Smaller Weight Unit</span></td>
-          <td><input class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.swu" type="text" id="smaller_weight_unit"></td>
+          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.swu" type="text" id="smaller_weight_unit"></td>
         </tr>
       </table>
     </div>
   </div>
 </div>
-<div style="padding-top: 8px;" class="container-fluid" *ngIf="this.optionsIsDisplayed">
+<div style="padding-top: 8px;" class="container-fluid font-app" *ngIf="this.optionsIsDisplayed">
   <div  class="card">
     <div class="card-header">Options</div>
     <div class="card-body">
@@ -236,8 +231,13 @@
           <th><span>Activation</span></th>
         </tr>
         <tr>
-          <td><span>Force SKU filling when listing CREATION (Not for relist, revise, sell similar)</span></td>
+          <td><span>Force SKU filling at listing CREATION (Not for relist, revise, sell similar actions)</span></td>
           <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.forceFillCreate" type="checkbox"></td>
+        </tr>
+        <tr>
+          <td><span>
+          Enable Prefilling at listing creation</span></td>
+          <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.enablePrefilling" type="checkbox"></td>
         </tr>
         <tr>
           <td><span>
@@ -249,8 +249,52 @@
   </div>
 </div>
 
-<footer class="page-footer font-small blue pt-4">
-  <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <span>DAPI software</span>
+
+<!-- <div class="container-fluid text-center pt-4">
+  <div class="row">
+    <div class="col-centered">Donations will be directly invested</div>
+  </div>
+  <div class="row">
+    <div class="col-centered">in further development</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-2 col-centered">
+      <input type="text" [(ngModel)]="this.kaching" style="text-align: center;" class="form-control">
+    </div>
+  </div>
+  <div>
+    <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
+      <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
+    </a>
+  </div>
+</div>
+-->
+<footer class="page-footer font-small blue pt-2 font-app">
+  <div class="footer-copyright text-center py-3">
+    <span>© 2020 Copyright: DAPI software</span>
   </div>
 </footer>
+
+
+<!-- 
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="573HWXP9K9P6E">
+<table>
+<tr><td><input type="hidden" name="on0" value="Amount">Amount</td></tr><tr><td><select name="os0">
+<option value="1">1 $1.00 CAD</option>
+<option value="2">2 $2.00 CAD</option>
+<option value="3">3 $3.00 CAD</option>
+<option value="4">4 $4.00 CAD</option>
+<option value="5">5 $5.00 CAD</option>
+<option value="10">10 $10.00 CAD</option>
+<option value="20">20 $20.00 CAD</option>
+<option value="50">50 $50.00 CAD</option>
+<option value="100">100 $100.00 CAD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="CAD">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+ -->
