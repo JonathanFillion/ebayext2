@@ -34,6 +34,19 @@
 	background-color: #ebebe0;
 }
 
+.timeleft {
+	font-weight: bolder;
+	font-size: 14px;
+}
+
+.red-font {
+	color: red;
+}
+
+.green-font {
+	color: green;
+}
+
 /*.form-control:focus {
 	border-color: inherit;
 	-webkit-box-shadow: none;

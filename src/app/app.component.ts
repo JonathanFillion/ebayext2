@@ -29,10 +29,12 @@ export class AppComponent {
 	errorList: string[] = []
 	mockedSku: string = ""
 	kaching:number = 5
-
+	appLicenceIsEnabled = false
 	skuIsDisplayed = true;
 	fillingsIsDisplayed = false;
 	optionsIsDisplayed = false;
+	displayTrialCountdown = false;
+	timeleft: number = 0;
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
 		this.sfl = new SkuFieldsTypeList()
@@ -41,19 +43,25 @@ export class AppComponent {
 	}
 
 	ngOnInit() {
-		chrome.storage.local.get(['sku', 'prefills', 'options'], (result) => {
-			if(result.sku){
-				this.createSkuModelFromJson(result.sku);
-			}
-			if(result.prefills){
-				this.loadPrefillsFromJson(result.prefills)
-			}
-			if(result.options){
-				this.loadOptionsFromJson(result.options)
-			}
+
+		chrome.runtime.sendMessage({type:"access"}, (access) => {
+			this.appLicenceIsEnabled = access.access;
+			this.displayTrialCountdown = access.trial;
+			this.timeleft = Number(Math.round(access.timeleft.toFixed(2)));
+			this.changeDetectorRef.detectChanges()
+			chrome.storage.local.get(['sku', 'prefills', 'options'], (result) => {
+				if(result.sku){
+					this.createSkuModelFromJson(result.sku);
+				}
+				if(result.prefills){
+					this.loadPrefillsFromJson(result.prefills)
+				}
+				if(result.options){
+					this.loadOptionsFromJson(result.options)
+				}
+			})
 		})
 	}
-
 	savePrefills() {
 		chrome.storage.local.set({prefills : JSON.stringify(this.prefills)})
 	}

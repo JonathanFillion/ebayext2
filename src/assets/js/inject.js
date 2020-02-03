@@ -348,7 +348,7 @@ function genSkuControlMenu(){
 	options = false;
 
 
-	chrome.extension.sendMessage({}, function(me) {
+	chrome.extension.sendMessage({type:"identity"}, function(me) {
 		var readyStateCheckInterval = setInterval(function() {
 			if(document.readyState === "complete") {
 				clearInterval(readyStateCheckInterval);

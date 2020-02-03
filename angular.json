@@ -27,7 +27,7 @@
               "src/assets",
               "src/manifest.json",
               "src/assets/js/inject.js",
-              "src/assets/js/background.js"
+              "src/assets/js/background.js",
             ],
             "styles": [
               "src/styles.css",
