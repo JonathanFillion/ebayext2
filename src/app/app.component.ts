@@ -28,10 +28,10 @@ export class AppComponent {
 	isPrefillingActive = false;
 	errorList: string[] = []
 	mockedSku: string = ""
-	kaching:number = 2
+	kaching:number = 3
 	skuIsDisplayed = true;
 	fillingsIsDisplayed = false;
-	aBitHigher = true;
+	aBitHigher = false;
 	optionsIsDisplayed = false;
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
@@ -42,18 +42,17 @@ export class AppComponent {
 
 	ngOnInit() {
 		chrome.storage.local.get(['date'], (result) => {
-			console.log(result.date)
+			
 			if(result.date === undefined){
-				console.log("in init date")
 				result.date = Date.now();
 				chrome.storage.local.set({date: result.date})
 			}
 			let daysSinceBeginning = Date.now() - parseInt(result.date,10)
 			daysSinceBeginning = daysSinceBeginning / 1000 / 60 / 60 / 24;
-			console.log(daysSinceBeginning)
 
-			if(daysSinceBeginning > 30){
+			if(daysSinceBeginning  > 30){
 				this.aBitHigher = true;
+				this.changeDetectorRef.detectChanges()
 			}
 		})
 
@@ -74,7 +73,6 @@ export class AppComponent {
 	}
 
 	saveOptions(){
-		console.log(this.options)
 		chrome.storage.local.set({options:JSON.stringify(this.options)})
 	}
 	displaySku(){
@@ -104,7 +102,6 @@ export class AppComponent {
 	}
 
 	createSkuModelFromJson(skuJson: string) {
-		console.log(skuJson)
 		let skuObject: any[] = JSON.parse(skuJson);
 
 		for (let i = 0; i < skuObject.length; i++) {
@@ -229,9 +226,7 @@ export class AppComponent {
 	}
 
 	mockSku(){
-
 		this.mockedSku = "";
-
 		for(let i = 0 ; i < this.SKU.length; i++) {
 
 			switch(this.SKU[i]["TYPE"]){

@@ -1,6 +1,6 @@
 {
 	"name": "Ebay Sku Generator",
-	"version": "2.10",
+	"version": "2.11",
 	"description": "Ebay Sku Generator by DAPI software",
 	"manifest_version": 2,
 	"browser_action": {

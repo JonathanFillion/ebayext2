@@ -330,7 +330,7 @@ function genSkuControlMenu(){
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Relist your listing")) {
 				removePayingOptionsIfEnabled()
 				genSkuControlMenu()
-			}// && !me.url.includes("/ws/eBayISAPI.dll?SingleList&sellingMode=AddItem")
+			}
 			else if (me.url.includes("bulksell.ebay.") && me.tab.title.includes("Revise your listing")) {
 				removePayingOptionsIfEnabled()
 				genSkuControlMenu()

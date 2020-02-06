@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div *ngIf="this.aBitHigher" class="container-fluid text-center font-app pt-4">
+      <div *ngIf="this.aBitHigher" class="container-fluid text-center font-app pt-4 pb-4">
         <div class="row">
           <div class="col-centered">I drink coffee too !</div>
         </div>
@@ -63,14 +63,11 @@
               <option>4</option>
               <option>5</option>
               <option>10</option>
-              <option>20</option>
-              <option>50</option>
-              <option>100</option>
             </select>
           </div>
         </div>
         <div>
-          <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
+          <a target="_blank" (click)="donateClick()" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
             <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
           </a>
         </div>
@@ -194,33 +191,30 @@
     </div>
 
     <div class="container-fluid font-app" *ngIf="this.fillingsIsDisplayed">
+      <div *ngIf="this.aBitHigher" class="container-fluid text-center font-app pt-4 pb-4">
+        <div class="row">
+          <div class="col-centered">I drink coffee too !</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-2 col-centered">
+            <select class="form-control" [(ngModel)]="this.kaching">
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>10</option>                 
+            </select>
+          </div>
+        </div>
+        <div>
+          <a target="_blank" (click)="donateClick()" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
+            <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
+          </a>
+        </div>
+      </div>
       <div class="card" style="margin-top: 8px">
         <div class="card-header">Prefilled data</div>
         <div class="card-body">
-          <div *ngIf="this.aBitHigher" class="container-fluid text-center font-app pt-4">
-            <div class="row">
-              <div class="col-centered">I drink coffee too !</div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2 col-centered">
-                <select class="form-control" [(ngModel)]="this.kaching">
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                  <option>10</option>
-                  <option>20</option>
-                  <option>50</option>
-                  <option>100</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
-                <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
-              </a>
-            </div>
-          </div>
           <table id="preffillTable" class="table">
             <tr>
               <th><span>Field</span></th>
@@ -258,34 +252,32 @@
         </div>
       </div>
     </div>
-    <div style="padding-top: 8px;" class="container-fluid font-app" *ngIf="this.optionsIsDisplayed">
+    <div style="padding: 8px;" class="container-fluid font-app" *ngIf="this.optionsIsDisplayed">
+      <div *ngIf="this.aBitHigher" class="container-fluid text-center font-app pt-4 pb-4">
+        <div class="row">
+          <div class="col-centered">I drink coffee too !</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-2 col-centered">
+            <select class="form-control" [(ngModel)]="this.kaching">
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>10</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <a target="_blank" (click)="donateClick()" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
+            <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
+          </a>
+        </div>
+      </div>
       <div  class="card">
         <div class="card-header">Options</div>
         <div class="card-body">
-          <div *ngIf="this.aBitHigher" class="container-fluid text-center font-app pt-4">
-            <div class="row">
-              <div class="col-centered">I drink coffee too !</div>
-            </div>
-            <div class="row">
-              <div class="col-xs-2 col-centered">
-                <select class="form-control" [(ngModel)]="this.kaching">
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                  <option>10</option>
-                  <option>20</option>
-                  <option>50</option>
-                  <option>100</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
-                <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
-              </a>
-            </div>
-          </div>
+
           <table class="table">
             <tr>
               <th><span>Option</span></th>
@@ -323,14 +315,11 @@
           <option>4</option>
           <option>5</option>
           <option>10</option>
-          <option>20</option>
-          <option>50</option>
-          <option>100</option>
         </select>
       </div>
     </div>
     <div>
-      <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
+      <a target="_blank" (click)="donateClick()" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0={{kaching}}" >
         <img style="margin-top: 4px;" alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif">
       </a>
     </div>
