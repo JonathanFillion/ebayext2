@@ -28,13 +28,11 @@ export class AppComponent {
 	isPrefillingActive = false;
 	errorList: string[] = []
 	mockedSku: string = ""
-	kaching:number = 5
-	appLicenceIsEnabled = false
+	kaching:number = 2
 	skuIsDisplayed = true;
 	fillingsIsDisplayed = false;
+	aBitHigher = true;
 	optionsIsDisplayed = false;
-	displayTrialCountdown = false;
-	timeleft: number = 0;
 
 	constructor(private changeDetectorRef: ChangeDetectorRef) {
 		this.sfl = new SkuFieldsTypeList()
@@ -43,23 +41,32 @@ export class AppComponent {
 	}
 
 	ngOnInit() {
+		chrome.storage.local.get(['date'], (result) => {
+			console.log(result.date)
+			if(result.date === undefined){
+				console.log("in init date")
+				result.date = Date.now();
+				chrome.storage.local.set({date: result.date})
+			}
+			let daysSinceBeginning = Date.now() - parseInt(result.date,10)
+			daysSinceBeginning = daysSinceBeginning / 1000 / 60 / 60 / 24;
+			console.log(daysSinceBeginning)
 
-		chrome.runtime.sendMessage({type:"access"}, (access) => {
-			this.appLicenceIsEnabled = access.access;
-			this.displayTrialCountdown = access.trial;
-			this.timeleft = Number(Math.round(access.timeleft.toFixed(2)));
-			this.changeDetectorRef.detectChanges()
-			chrome.storage.local.get(['sku', 'prefills', 'options'], (result) => {
-				if(result.sku){
-					this.createSkuModelFromJson(result.sku);
-				}
-				if(result.prefills){
-					this.loadPrefillsFromJson(result.prefills)
-				}
-				if(result.options){
-					this.loadOptionsFromJson(result.options)
-				}
-			})
+			if(daysSinceBeginning > 30){
+				this.aBitHigher = true;
+			}
+		})
+
+		chrome.storage.local.get(['sku', 'prefills', 'options'], (result) => {
+			if(result.sku){
+				this.createSkuModelFromJson(result.sku);
+			}
+			if(result.prefills){
+				this.loadPrefillsFromJson(result.prefills)
+			}
+			if(result.options){
+				this.loadOptionsFromJson(result.options)
+			}
 		})
 	}
 	savePrefills() {
@@ -217,6 +224,10 @@ export class AppComponent {
 		this.saveSku()
 	}
 
+	donateClick() {
+		chrome.storage.local.set({date: Date.now()})
+	}
+
 	mockSku(){
 
 		this.mockedSku = "";
@@ -254,11 +265,11 @@ export class AppComponent {
 		for (let i = 0; i < this.SKU.length; i++) {
 			switch (this.SKU[i]["TYPE"]) {
 				case "ID":
-				
+
 				if (!this.isNumber(this.SKU[i]["currentId"])) {
 					this.errorList.push("In ID field " + this.SKU[i].name + ", Current Id must be a number")
 				}
-				
+
 				break;
 
 				case "SELECT":

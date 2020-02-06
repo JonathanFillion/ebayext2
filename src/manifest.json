@@ -1,6 +1,6 @@
 {
 	"name": "Ebay Sku Generator",
-	"version": "2.9",
+	"version": "2.10",
 	"description": "Ebay Sku Generator by DAPI software",
 	"manifest_version": 2,
 	"browser_action": {
@@ -17,8 +17,7 @@
 	},
 	"permissions": [
 		"storage",
-		"activeTab",
-		"identity"
+		"activeTab"
 	],
 	"background": {
 		"scripts": [
@@ -28,16 +27,6 @@
 	},
 
 	"key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnetFRQYqtqNukIgLfuuFJw4ipwRJfwtBsWFVDutkXB96fTk+tYWoecHCMQsRm+MYdRjpMaEPCnHh9SqlcSJ6bC7Kbvmzg8vYN2gDbpHkByOu2/CUYx5FuWgEadFjux4SC3dEfWSq8ccYiWTZWtHe0eAc5IUlIfUnZ1hzYbgeQSKElZRWKgyScwcwPWMk1DpVKhDQbZQoliP8IXa8AJspVxENYNjYaDgV8ZULI0S+Pz7cxlXWSuxvIU6uIZvumvltgvZT029CVUSp16lCPeJrJJsartXEu5U1umnjZB3WkykA3Snu4GysTx1UDMprCnFJ9RW+yia6MzmtbZGYxYLrqwIDAQAB",
-
-	"oauth2": {
-		"client_id": "742159389957-b0q6bgvl7qukeiigiop0jt543ej31re8.apps.googleusercontent.com",
-		"scopes":[
-			"https://www.googleapis.com/auth/plus.login",
-			"https://www.googleapis.com/auth/chromewebstore.readonly"
-		]
-	},
-
-
 
 	"content_scripts": [
 		{

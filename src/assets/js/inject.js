@@ -346,26 +346,22 @@ function genSkuControlMenu(){
 	prefills = false;
 	options = false;
 
-
-	chrome.extension.sendMessage({type:"identity+access"}, function(resp) {
-		me = resp.sender
+	chrome.extension.sendMessage({type:"identity"}, function(me) {
 		var readyStateCheckInterval = setInterval(function() {
-			if(resp.access.access){
-				if(document.readyState === "complete") {
-					clearInterval(readyStateCheckInterval);
-					chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
-						if(result.sku){
-							skuStructure = JSON.parse(result.sku)
-							if(result.prefills){
-								prefills = JSON.parse(result.prefills)
-							}
-							if(result.options){
-								options = JSON.parse(result.options)
-							}
-							main(me)
+			if(document.readyState === "complete") {
+				clearInterval(readyStateCheckInterval);
+				chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
+					if(result.sku){
+						skuStructure = JSON.parse(result.sku)
+						if(result.prefills){
+							prefills = JSON.parse(result.prefills)
 						}
-					})
-				}
+						if(result.options){
+							options = JSON.parse(result.options)
+						}
+						main(me)
+					}
+				})
 			}
 		}, 1450);
 	});
