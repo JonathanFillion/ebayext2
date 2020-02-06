@@ -5,7 +5,6 @@ var TRIAL_PERIOD_DAYS = 30;
 chrome.identity.getAuthToken({interactive: true}, function(token) {
 
 	var req = new XMLHttpRequest();
-
 	req.open('GET', CWS_LICENSE_API_URL + chrome.runtime.id);
 	req.setRequestHeader('Authorization', 'Bearer ' + token);
 	req.onreadystatechange = function() {
@@ -51,17 +50,16 @@ function onLicenseFetched(error, status, response) {
 
 function parseLicense(license) {
 	if (license.result && license.accessLevel == "FULL") {
-		console.log("Fully paid & properly licensed.");
+		stopLicenseTimer()
 		access = {access:true, trial:false};
 	} else if (license.result && license.accessLevel == "FREE_TRIAL") {
 		var daysAgoLicenseIssued = Date.now() - parseInt(license.createdTime, 10);
 		daysAgoLicenseIssued = daysAgoLicenseIssued / 1000 / 60 / 60 / 24;
 		if (daysAgoLicenseIssued <= TRIAL_PERIOD_DAYS) {
-			console.log("Free trial, still within trial period");
 			access = {access:true, trial:true, timeleft:(TRIAL_PERIOD_DAYS - daysAgoLicenseIssued)};
 		} else {
-			console.log("Free trial, trial period expired.");
-			access = {access:false};			
+			access = {access:false};	
+			startLicenseTimer();
 		}
 	} else {
 		console.log("No license ever issued.");
@@ -78,13 +76,11 @@ function xhrWithAuth(method, url, interactive, callback) {
 	getToken();
 
 	function getToken() {
-		console.log("Calling chrome.identity.getAuthToken", interactive);
 		chrome.identity.getAuthToken({ interactive: interactive }, function(token) {
 			if (chrome.runtime.lastError) {
 				callback(chrome.runtime.lastError);
 				return;
 			}
-			console.log("chrome.identity.getAuthToken returned a token", token);
 			access_token = token;
 			requestStart();
 		});
@@ -109,18 +105,28 @@ function xhrWithAuth(method, url, interactive, callback) {
 	}
 }
 
+function startLicenseTimer(){
+	licenseTimer = setInterval(function(){ init(); }, 60000);
+	console.log(licenseTimer)
+}
+
+function stopLicenseTimer() {
+	if(licenseTimer){
+		clearInterval(licenseTimer);
+	}
+}
 
 init();
 
-var access = false;
-
+var access = {access:false}
+var licenseTimer = null;
 
 //For Inject.js in order to get tab, url, title.
 chrome.extension.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		console.log(request)
-		if(request.type === "identity"){
-			sendResponse(sender);
+		if(request.type === "identity+access"){
+			var response = {sender:sender, access:access}
+			sendResponse(response);
 		}
 		else if (request.type === "access"){
 			sendResponse(access)

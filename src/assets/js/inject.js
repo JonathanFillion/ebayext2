@@ -30,7 +30,6 @@ function genSkuControlMenu(){
 	var tdStyles = "padding: 8px;border: 1px solid #dddddd;"
 	var thStyles = "padding: 8px;border: 1px solid #dddddd;"
 
-
 	var sku_area = document.getElementById("editpaneSect_CustomLabel");
 	var container = document.createElement("div")
 	container.id = "superduperskugen"
@@ -348,23 +347,25 @@ function genSkuControlMenu(){
 	options = false;
 
 
-	chrome.extension.sendMessage({type:"identity"}, function(me) {
+	chrome.extension.sendMessage({type:"identity+access"}, function(resp) {
+		me = resp.sender
 		var readyStateCheckInterval = setInterval(function() {
-			if(document.readyState === "complete") {
-				clearInterval(readyStateCheckInterval);
-				chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
-					if(result.sku){
-						skuStructure = JSON.parse(result.sku)
-						if(result.prefills){
-							prefills = JSON.parse(result.prefills)
+			if(resp.access.access){
+				if(document.readyState === "complete") {
+					clearInterval(readyStateCheckInterval);
+					chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
+						if(result.sku){
+							skuStructure = JSON.parse(result.sku)
+							if(result.prefills){
+								prefills = JSON.parse(result.prefills)
+							}
+							if(result.options){
+								options = JSON.parse(result.options)
+							}
+							main(me)
 						}
-						if(result.options){
-							options = JSON.parse(result.options)
-						}
-						main(me)
-					}
-					
-				})
+					})
+				}
 			}
 		}, 1450);
 	});

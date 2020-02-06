@@ -22,11 +22,14 @@
     <div *ngIf="this.displayTrialCountdown">
       <div class="container-fluid">
         <div class="card font-app">
-          <div class="card-header">
+          <div *ngIf="this.timeleft > 0" class="card-header">
             Trial expires in : <span class="timeleft" [ngClass]="{'red-font': timeleft < 5, 'green-font': timeleft >= 5}">{{this.timeleft}}</span> days
           </div>
+          <div *ngIf="this.timeleft == 0" class="card-header">
+            Trial expires: <span class="timeleft red-font"> LAST DAY</span>
+            <div class="text-center" style="margin-top: 8px;"><a target="_blank" href="https://chrome.google.com/webstore/category/extensions?hl=fr" class="btn btn-primary" role="button">Subscribe on the Chrome App Store</a></div>
+          </div>
         </div>
-
       </div>
     </div>
 
@@ -93,190 +96,176 @@
                   <td>
                     <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
                   </td>
-     <!--   <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].startPoint">
-            </td> -->
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="card-body" *ngIf="skuField.TYPE === 'SELECT'">
-        <div><span class="type-hint-small">SELECT</span></div>
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Fields (comma-separated)</th>
-            <!-- <th>Selection</th> -->
-          </tr>
-          <tr>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-            </td>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
-            </td>
-   <!--<td *ngIf="this.SKU[index].choices.split(',').length">
-              <select selectedIndex="parseInt(this.SKU[index]['currentValue'])" (change)="selectAction($event,index)" class="form-control">
-                <option *ngFor="let choice of this.SKU[index].choices.split(',')">
-                  {{choice}}
-                </option>
-              </select>
-            </td> -->
-          </tr>
-        </table>
-      </div>
-      <div class="card-body" *ngIf="skuField.TYPE === 'DATE'">
-        <div><span class="type-hint-small">DATE</span></div>
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Separation Character</th>              
-          </tr>
-          <tr>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-            </td>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="card-body" *ngIf="skuField.TYPE === 'VALUE'">
-        <div><span class="type-hint-small">VALUE</span></div>
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Value</th>
-          </tr>
-          <tr>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-            </td>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="card-body" *ngIf="skuField.TYPE === 'CONST'">
-        <div><span class="type-hint-small">CONSTANT</span></div>
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Value</th>
-          </tr>
-          <tr>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
-            </td>
-            <td>
-              <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
-            </td>
-          </tr>
-        </table>
-      </div>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentId">
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-body" *ngIf="skuField.TYPE === 'SELECT'">
+              <div><span class="type-hint-small">SELECT</span></div>
+              <table>
+                <tr>
+                  <th>Name</th>
+                  <th>Fields (comma-separated)</th>
+                </tr>
+                <tr>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                  </td>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].choices">
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-body" *ngIf="skuField.TYPE === 'DATE'">
+              <div><span class="type-hint-small">DATE</span></div>
+              <table>
+                <tr>
+                  <th>Name</th>
+                  <th>Separation Character</th>              
+                </tr>
+                <tr>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                  </td>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].separator">
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-body" *ngIf="skuField.TYPE === 'VALUE'">
+              <div><span class="type-hint-small">VALUE</span></div>
+              <table>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+                <tr>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                  </td>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-body" *ngIf="skuField.TYPE === 'CONST'">
+              <div><span class="type-hint-small">CONSTANT</span></div>
+              <table>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+                <tr>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].name">
+                  </td>
+                  <td>
+                    <input (input)="saveSku()" class="form-control" type="text" [(ngModel)]="this.SKU[index].currentValue">
+                  </td>
+                </tr>
+              </table>
+            </div>
 
-      <div class="card-footer">
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary btn-sm" (click)="moveUp(index)">Move up</button>
-          <button type="button" class="btn btn-secondary btn-sm" (click)="moveDown(index)">Move down</button>
-          <button type="button" class="btn btn-danger btn-sm" (click)="removeSkuElement(index)">Delete</button>
+            <div class="card-footer">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary btn-sm" (click)="moveUp(index)">Move up</button>
+                <button type="button" class="btn btn-secondary btn-sm" (click)="moveDown(index)">Move down</button>
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeSkuElement(index)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid font-app" *ngIf="this.fillingsIsDisplayed">
+      <div class="card" style="margin-top: 8px">
+        <div class="card-header">Prefilled data</div>
+        <div class="card-body">
+          <table id="preffillTable" class="table">
+            <tr>
+              <th><span>Field</span></th>
+              <th><span>Data</span></th>
+            </tr>
+            <tr>
+              <td><span>Condition</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.condition" type="text" id="condition"></td>
+            </tr>
+            <tr>
+              <td><span>Price</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.price" type="text" id="price"></td>
+            </tr>
+            <tr>
+              <td><span>Size1</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()"  [(ngModel)]="this.prefills.size1"  type="text" id="size1"></td>
+            </tr>
+            <tr>
+              <td><span>Size2</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size2" type="text" id="size2"></td>
+            </tr>
+            <tr>
+              <td><span>Size3</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling"  class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size3"  type="text" id="size3"></td>
+            </tr>
+            <tr>
+              <td><span>Larger Weight Unit</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.lwu" type="text" id="larger_weight_unit"></td>
+            </tr>
+            <tr>
+              <td><span>Smaller Weight Unit</span></td>
+              <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.swu" type="text" id="smaller_weight_unit"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div style="padding-top: 8px;" class="container-fluid font-app" *ngIf="this.optionsIsDisplayed">
+      <div  class="card">
+        <div class="card-header">Options</div>
+        <div class="card-body">
+          <table class="table">
+            <tr>
+              <th><span>Option</span></th>
+              <th><span>Activation</span></th>
+            </tr>
+            <tr>
+              <td><span>Force SKU filling at listing CREATION (Not for relist, revise, sell similar actions)</span></td>
+              <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.forceFillCreate" type="checkbox"></td>
+            </tr>
+            <tr>
+              <td><span>
+              Enable Prefilling at listing creation</span></td>
+              <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.enablePrefilling" type="checkbox"></td>
+            </tr>
+            <tr>
+              <td><span>
+              Remove paying options</span></td>
+              <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.removePayingOptions" type="checkbox"></td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
   </div>
-</div>
-</div>
 
-<div class="container-fluid font-app" *ngIf="this.fillingsIsDisplayed">
-  <div class="card" style="margin-top: 8px">
-    <div class="card-header">Prefilled data</div>
-    <div class="card-body">
-      <table id="preffillTable" class="table">
-        <tr>
-          <th><span>Field</span></th>
-          <th><span>Data</span></th>
-        </tr>
-        <tr>
-          <td><span>Condition</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.condition" type="text" id="condition"></td>
-        </tr>
-        <tr>
-          <td><span>Price</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.price" type="text" id="price"></td>
-        </tr>
-        <tr>
-          <td><span>Size1</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()"  [(ngModel)]="this.prefills.size1"  type="text" id="size1"></td>
-        </tr>
-        <tr>
-          <td><span>Size2</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size2" type="text" id="size2"></td>
-        </tr>
-        <tr>
-          <td><span>Size3</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling"  class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.size3"  type="text" id="size3"></td>
-        </tr>
-        <tr>
-          <td><span>Larger Weight Unit</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.lwu" type="text" id="larger_weight_unit"></td>
-        </tr>
-        <tr>
-          <td><span>Smaller Weight Unit</span></td>
-          <td><input [disabled]="!this.options.enablePrefilling" class="form-control" (change)="this.savePrefills()" [(ngModel)]="this.prefills.swu" type="text" id="smaller_weight_unit"></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
-<div style="padding-top: 8px;" class="container-fluid font-app" *ngIf="this.optionsIsDisplayed">
-  <div  class="card">
-    <div class="card-header">Options</div>
-    <div class="card-body">
-      <table class="table">
-        <tr>
-          <th><span>Option</span></th>
-          <th><span>Activation</span></th>
-        </tr>
-        <tr>
-          <td><span>Force SKU filling at listing CREATION (Not for relist, revise, sell similar actions)</span></td>
-          <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.forceFillCreate" type="checkbox"></td>
-        </tr>
-        <tr>
-          <td><span>
-          Enable Prefilling at listing creation</span></td>
-          <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.enablePrefilling" type="checkbox"></td>
-        </tr>
-        <tr>
-          <td><span>
-          Remove paying options</span></td>
-          <td><input class="form-control" (change)="this.saveOptions()" [(ngModel)]="this.options.removePayingOptions" type="checkbox"></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
-</div>
-
-
-<div *ngIf="!this.appLicenceIsEnabled">
-  <div class="container-fluid font-app">
-    <div class="card align-items-center">
-      <div class="card-body">
-        <div class="text-center">Your free trial period has expired ...</div>
-        <div class="text-center" style="margin-top: 8px;"><a target="_blank" href="https://chrome.google.com/webstore/category/extensions?hl=fr" class="btn btn-primary" role="button">Subscribe on the Chrome App Store</a></div>
+  <div *ngIf="!this.appLicenceIsEnabled">
+    <div class="container-fluid font-app">
+      <div class="card align-items-center">
+        <div class="card-body">
+          <div class="text-center">Your free trial period has expired ...</div>
+          <div class="text-center" style="margin-top: 8px;"><a target="_blank" href="https://chrome.google.com/webstore/category/extensions?hl=fr" class="btn btn-primary" role="button">Subscribe on the Chrome App Store</a></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-
-
-<footer class="page-footer font-small blue pt-2 font-app">
-  <div class="footer-copyright text-center py-3">
-    <span>© 2020 Copyright: DAPI software</span>
-  </div>
-</footer>
+  <footer class="page-footer font-small blue pt-2 font-app">
+    <div class="footer-copyright text-center py-3">
+      <span>© 2020 Copyright: DAPI software</span>
+    </div>
+  </footer>
