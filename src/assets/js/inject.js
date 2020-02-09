@@ -26,6 +26,28 @@ function removePayingOptionsIfEnabled() {
 	
 }
 
+
+function injectDonationButton(){
+	var divContainer = document.createElement("div")
+	var divDonate = document.createElement("div")
+	divDonate.innerText = "You can buy me a coffee too !"
+	divDonate.style = "margin-left:3px;"
+	divContainer.style="padding-top:10px;"
+	var a = document.createElement("a")
+	a.onclick = function() {
+		chrome.storage.local.set({date: Date.now()})
+	}
+	a.target = "_blank"
+	a.href = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=573HWXP9K9P6E&on0=Amount&os0=3"
+	var img = document.createElement("img")
+	img.src = "https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif"
+	a.appendChild(img)
+	divContainer.appendChild(divDonate)
+	divContainer.appendChild(a)
+	return divContainer
+}
+
+
 function genSkuControlMenu(){
 	var tdStyles = "padding: 8px;border: 1px solid #dddddd;"
 	var thStyles = "padding: 8px;border: 1px solid #dddddd;"
@@ -159,7 +181,6 @@ function genSkuControlMenu(){
 				break;
 
 				case "CONST":
-
 				break;
 			}
 
@@ -177,6 +198,9 @@ function genSkuControlMenu(){
 		divbut.style = "padding-top:8px;"
 		divbut.appendChild(gensku)
 		container.appendChild(divbut)
+		if(displayDonate){
+			container.appendChild(injectDonationButton())
+		}
 		sku_area.appendChild(container);
 	}
 
@@ -345,12 +369,19 @@ function genSkuControlMenu(){
 	skuStructure = []
 	prefills = false;
 	options = false;
+	displayDonate = false;
 
 	chrome.extension.sendMessage({type:"identity"}, function(me) {
 		var readyStateCheckInterval = setInterval(function() {
 			if(document.readyState === "complete") {
 				clearInterval(readyStateCheckInterval);
-				chrome.storage.local.get(['sku', 'prefills', 'options'], function(result) {
+				chrome.storage.local.get(['sku', 'prefills', 'options', 'date'], function(result) {
+
+					let daysSinceBeginning = Date.now() - parseInt(result.date,10)
+					daysSinceBeginning = daysSinceBeginning / 1000 / 60 / 60 / 24;
+					if(daysSinceBeginning > 50){
+						displayDonate = true;
+					}
 					if(result.sku){
 						skuStructure = JSON.parse(result.sku)
 						if(result.prefills){

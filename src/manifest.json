@@ -1,6 +1,6 @@
 {
 	"name": "Ebay Sku Generator",
-	"version": "2.11",
+	"version": "2.14",
 	"description": "Ebay Sku Generator by DAPI software",
 	"manifest_version": 2,
 	"browser_action": {
@@ -39,23 +39,7 @@
 		},
 		{
 			"matches": [
-				"https://www.ebay.ca/*"
-			],
-			"js": [
-				"assets/js/inject.js"
-			]
-		},
-		{
-			"matches": [
 				"https://bulksell.ebay.com/*"
-			],
-			"js": [
-				"assets/js/inject.js"
-			]
-		},
-		{
-			"matches": [
-				"https://www.ebay.com/*"
 			],
 			"js": [
 				"assets/js/inject.js"
@@ -71,23 +55,7 @@
 		},
 		{
 			"matches": [
-				"https://www.ebay.co.uk/*"
-			],
-			"js": [
-				"assets/js/inject.js"
-			]
-		},
-		{
-			"matches": [
 				"https://bulksell.ebay.com.au/*"
-			],
-			"js": [
-				"assets/js/inject.js"
-			]
-		},
-		{
-			"matches": [
-				"https://www.ebay.com.au/*"
 			],
 			"js": [
 				"assets/js/inject.js"
