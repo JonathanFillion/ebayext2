@@ -50,10 +50,10 @@ export class AppComponent {
 			let daysSinceBeginning = Date.now() - parseInt(result.date,10)
 			daysSinceBeginning = daysSinceBeginning / 1000 / 60 / 60 / 24;
 
-			if(daysSinceBeginning  > 30){
+			/*if(daysSinceBeginning  > 30){
 				this.aBitHigher = true;
 				this.changeDetectorRef.detectChanges()
-			}
+			}*/
 		})
 
 		chrome.storage.local.get(['sku', 'prefills', 'options'], (result) => {
@@ -69,6 +69,7 @@ export class AppComponent {
 		})
 	}
 	savePrefills() {
+		console.log(this.prefills)
 		chrome.storage.local.set({prefills : JSON.stringify(this.prefills)})
 	}
 
@@ -95,6 +96,8 @@ export class AppComponent {
 
 	loadPrefillsFromJson(prefillsJson:string){
 		this.prefills = JSON.parse(prefillsJson)
+		console.log(this.prefills)
+		
 	}
 
 	loadOptionsFromJson(optionsJson:string){

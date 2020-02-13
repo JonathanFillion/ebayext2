@@ -380,7 +380,7 @@ function genSkuControlMenu(){
 					let daysSinceBeginning = Date.now() - parseInt(result.date,10)
 					daysSinceBeginning = daysSinceBeginning / 1000 / 60 / 60 / 24;
 					if(daysSinceBeginning > 50){
-						displayDonate = true;
+						//displayDonate = true;
 					}
 					if(result.sku){
 						skuStructure = JSON.parse(result.sku)
